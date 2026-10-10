@@ -1,0 +1,7 @@
+# User-console logs / local data — do not commit
+*.log
+*.pcap
+*.pcapng
+__pycache__/
+*.py[cod]
+.DS_Store
