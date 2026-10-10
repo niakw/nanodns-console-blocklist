@@ -17,6 +17,16 @@ This file is a **selective DNS denylist** for the independent nanoDNS payload.
 - Detection of every future endpoint or opaque CDN hostname.
 - All network traffic of emulator guest systems; behavior depends on each emulator's networking implementation.
 
+## Preventing leaks during installation and restart
+
+**First use:** isolate the console from WAN through a router/firewall or WAN-disconnected router (IPv4 and IPv6), but retain a LAN path if you need FTP or a locally usable payload loader. Install `/data/nanodns/nanodns.ini`, launch or restart nanoDNS, inspect the initial log, set **both** console DNS fields to `127.0.0.1`, and inspect **subsequent** DNS queries for `override matched` plus a blocked response.
+
+**Cold boot / crash:** a file on disk or console DNS pointed at loopback does not mean the payload is running. Restart it, inspect a current log, then decide whether to allow WAN. A loader that requires a public DNS host may create a separate unfiltered bootstrap interval; do not call that safe.
+
+**DNS fail-closed vs Internet fail-closed:** when a console points to loopback but nanoDNS is stopped, *ordinary name resolution* usually fails. That does **not** make IP forwarding fail-closed. Direct IPv4/IPv6 IP traffic, another resolver, DNS-over-HTTPS or cached connections can still reach destinations if WAN is available.
+
+See the full [English installation walkthrough](INSTALL.md), [French installation walkthrough](INSTALL.fr.md) and [startup safety checklist](SETUP_SAFETY.md).
+
 ## Why not block everything?
 
 A global `*=0.0.0.0` policy would prevent legitimate DNS resolution (artwork, GitHub, tools, updates of unrelated software). This project **deliberately does not include** such a rule. Instead, its known target names are blocked, with the accepted trade-off that unknown hosts may still resolve.

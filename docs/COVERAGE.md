@@ -22,6 +22,12 @@ A user-provided nanoDNS v0.4 startup/operation log showed:
 
 This is useful evidence that **observed DNS lookups** were intercepted. It is **not** evidence that no unlisted names resolve, all upstream Internet access works, or firmware updating is impossible. No full packet-capture or end-to-end update attempt was performed.
 
+## Installation vs. observed coverage
+
+The sequence matters: seeing a startup log **before** changing console DNS does not prove the console is using nanoDNS. Confirm a subsequent `query from=127.0.0.1`, `override matched`, and the expected blocked A / AAAA response in the **current** nanoDNS session. After a full reboot, check again. A public Internet connection may be re-enabled only if the user accepts that DNS-only filtering does **not** prevent direct-IP, alternate-resolver or pre-payload traffic.
+
+See [safe install (English)](INSTALL.md), [installation sécurisée (français)](INSTALL.fr.md) and [startup risk model](SETUP_SAFETY.md).
+
 ## Checking rules locally
 
 Run without third-party Python dependencies:

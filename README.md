@@ -54,33 +54,33 @@ This is **not** the crude “disconnect everything” approach. It is selective 
 
 > **Compatibility note:** Covering names associated with a platform does **not** prove that all of its online services, games or emulators are isolated. This project is designed to reduce selected DNS exposure; it does not modify emulator network stacks or game code.
 
-## Install in three steps
+## Safety-first installation — prevent unfiltered boot traffic
 
-1. Install and start the compatible [nanoDNS payload](https://github.com/drakmor/nanoDNS) on your own PS4/PS5 homebrew environment.
-2. Download [`nanodns.ini`](nanodns.ini) and copy it to **`/data/nanodns/nanodns.ini`** (back up your previous file first). Restart the payload to load the new rules.
-3. Set **both console DNS fields to `127.0.0.1`**, matching `bind=127.0.0.1`, and inspect `/data/nanodns/nanodns.log` for loading, blocked queries and upstream forwarding.
+> [!CAUTION]
+> **Do not connect a firmware-sensitive console to unrestricted Internet simply to install this blocklist.** First isolate its WAN access externally (router/firewall, including IPv4/IPv6) while keeping a local FTP/loader path. A saved INI cannot stop traffic before nanoDNS starts, and a running nanoDNS process cannot block direct-IP connections.
 
-**Do not put a public resolver as the console's secondary DNS**; it can bypass the local filter. The `1.1.1.1` and `9.9.9.9` entries **inside** nanoDNS are used only for names without an override.
+**Use the [complete step-by-step English guide](docs/INSTALL.md) or [guide d'installation sécurisée en français](docs/INSTALL.fr.md).** Read the [startup/reboot safety checklist](docs/SETUP_SAFETY.md) before your first online session.
 
-Full instructions, recovery steps and troubleshooting: [Installation Guide](docs/INSTALL.md).
+| Stage | What to do | Proof before continuing |
+| --- | --- | --- |
+| **1 · Isolate** | Keep console WAN denied; prepare a **local/offline loader**, disable automatic updates, examine pending update downloads. | No unfiltered public Internet during setup. |
+| **2 · Install** | Back up existing `/data/nanodns/nanodns.ini`; copy this repo's [`nanodns.ini`](nanodns.ini) to that **exact path**. | Correct INI, not AdGuard/hosts syntax; backup retained. |
+| **3 · Start** | Start/restart loader **locally**, then start/restart nanoDNS; cold reboot only if loader requires it. | **First logs:** `124 rule(s), 0 exception(s)`, listener `127.0.0.1:53`. |
+| **4 · DNS** | Set **both** PS4/PS5 DNS fields to **`127.0.0.1`**; **no public secondary resolver**. | Confirm both fields saved correctly. |
+| **5 · Verify** | Read **new console-side logs** and look for `query from`, `override matched`, A→`0.0.0.0`, AAAA→0 answers. | Actual blocked DNS queries, not just a process startup message. |
+| **6 · Selective WAN** | **Only if the residual risks are acceptable:** allow Internet and test an unlisted permitted name (e.g. GitHub). | Upstream answer logged; blocked domains still match. |
+| **7 · Every reboot** | Relaunch nanoDNS and recheck listeners, DNS settings and current-session logs. | Don't trust a previous boot's result. |
 
-```ini
-[general]
-bind=127.0.0.1
-bind6=::1
+**The two public upstreams in the INI are not PS5 DNS settings.** The console DNS fields stay at `127.0.0.1` / `127.0.0.1`. If the payload is absent, standard loopback name resolution usually fails, but **direct-IP / alternative-DNS traffic may still pass**. For a zero-WAN requirement, retain external WAN blocking.
 
-[upstream]
-server=1.1.1.1
-server=9.9.9.9
+**Do not test by checking for a firmware update or logging in to PSN.** Sony connectivity tests may fail by design; use passive logs and benign, unrelated permitted services.
 
-[overrides]
-*playstation*=0.0.0.0
-*nintendo*=0.0.0.0
-*.xboxlive.com=0.0.0.0
-# ... 121 more carefully grouped rules
-
-[exceptions]
-# None
+```text
+[data] /data/nanodns/nanodns.ini
+[PS4 / PS5 primary DNS]   127.0.0.1
+[PS4 / PS5 secondary DNS] 127.0.0.1
+[first log] 124 rule(s) • 0 exception(s) • listening on 127.0.0.1:53
+[next log] override matched → response via=override / override-nodata
 ```
 
 ## What has actually been verified?
