@@ -13,7 +13,7 @@
 
 **English (default)** · [Français](README.fr.md)
 
-[**Get the blocklist**](nanodns.ini) · [**Install in English**](docs/INSTALL.md) · [**Compare protections**](docs/COMPARISON.md) · [**Security model**](docs/THREAT_MODEL.md)
+[**Get the blocklist**](nanodns.ini) · [**Our nanoDNS for PS5 13.60**](https://github.com/niakw/nanoDNS-13.60) · [**Install in English**](docs/INSTALL.md) · [**Compare protections**](docs/COMPARISON.md) · [**Security model**](docs/THREAT_MODEL.md)
 
 </div>
 
@@ -27,6 +27,16 @@ Consoles running homebrew, emulators and media tools may resolve platform-servic
 
 The result is transparent, editable, auditable and practical: **block known unwanted hostnames while retaining DNS for permitted services.**
 
+## Choose your nanoDNS: Drakmor original or our PS5 13.60 edition
+
+This repository supplies the **124-rule `nanodns.ini` blocklist**, which you can use with [Drakmor's original nanoDNS](https://github.com/drakmor/nanoDNS).
+
+For a **complete alternative payload**, we also maintain **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-13.60)**, an independent hardened runtime based on Drakmor's work, specifically prepared for **PS5 firmware 13.60**. Unlike an INI-only replacement, it embeds the protected rules in the binary, enforces them before user exceptions, and includes security and process-lifecycle improvements.
+
+**PS5 firmware 13.60 — real-user tested:** release **0.4-13.60.2** successfully started, loaded 124 rules with 0 exceptions, blocked all **5 observed A DNS queries**, and completed a normal shutdown/power-on trial without recurrence of the previously reported problem (power-cycle result user-reported). **Other PS5 firmwares and PS4 have not been user-validated.** Rest/resume, permitted upstream lookups, AAAA and long-duration stability still require tests. Neither version replaces a firewall.
+
+**[Explore our nanoDNS 13.60 repository](https://github.com/niakw/nanoDNS-13.60)** · [Latest Release](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Download ready-to-copy ELF + INI ZIP](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip)
+
 ## How much stronger than the original?
 
 | Capability | Original nanoDNS v0.4 defaults | **Console Blocklist** | Optional hardened runtime fork |
@@ -38,9 +48,9 @@ The result is transparent, editable, auditable and practical: **block known unwa
 | Standard DNS on permitted sites | Available | **Preserved** | Preserved |
 | Resolver code hardening | Original behavior | Not applicable — configuration only | Extra checks for replies, duplicate instances and shutdown |
 | Guaranteed prevention of all outbound traffic | **No** | **No** | **No** |
-| Hardware shutdown/wake validated here | Unverified | Not applicable | **Pending** |
+| Firmware 13.60 shutdown/power-on user test | Not established | Not applicable — INI only | **Passed on PS5 13.60 with runtime 0.4-13.60.2**; rest/resume unverified |
 
-**Important distinction:** the original nanoDNS can load a custom INI. Its eight rules and six exceptions are its **factory defaults**, not a limit. This repository ships a stronger **configuration**. Only the [separate hardened fork](https://github.com/niakw/nanoDNS-13.60) implements a mandatory embedded baseline and extra runtime security. [See full technical comparison](docs/COMPARISON.md).
+**Important distinction:** the original nanoDNS can load a custom INI. Its eight rules and six exceptions are its **factory defaults**, not a limit. This repository ships a stronger **configuration**. Only our [PS5 13.60 hardened nanoDNS runtime](https://github.com/niakw/nanoDNS-13.60) implements a mandatory embedded baseline and extra runtime security. [See full technical comparison](docs/COMPARISON.md).
 
 ## A clean, selective DNS path
 

@@ -10,6 +10,7 @@
 - Add explicit links to the correct-language installation manuals, source acknowledgements, security boundaries and published evidence.
 - Document safe startup, independent router/firewall requirements, and the distinction between config-only and binary-enforced safeguards.
 - Add policy and documentation regression checks.
+- Make the separately maintained [nanoDNS 13.60](https://github.com/niakw/nanoDNS-13.60) a prominent alternative to Drakmor's original runtime in English/French README and comparisons; document the version-specific PS5 firmware 13.60 user test and links to the Release/ZIP without claiming validation on other firmware.
 
 ## 0.1.0 — 2026-10-10
 

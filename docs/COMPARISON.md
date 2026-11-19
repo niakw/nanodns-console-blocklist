@@ -18,7 +18,13 @@ This compares **default shipped configurations**, not the maximum capabilities o
 | Duplicate launches | Kills previous process | Depends on installed payload | No forced kill; exclusive UDP listener |
 | Log lifecycle | Current log replaced | Depends on installed payload | Previous log retained and size capped |
 | No network leaks of any kind | **Not guaranteed** | **Not guaranteed** | **Not guaranteed** |
-| Firmware 13.60 shutdown/wake tested | Not established here | Not applicable | **Pending hardware validation** |
+| Firmware 13.60 shutdown/power-on trial | Not established here | Not applicable | **User-tested successfully on PS5 13.60, runtime 0.4-13.60.2**; rest/resume untested |
+
+## Runtime alternatives
+
+Use the **[original nanoDNS by Drakmor](https://github.com/drakmor/nanoDNS)** with this project's `nanodns.ini` when you only want to customize its DNS configuration. Alternatively, our independent **[nanoDNS 13.60 runtime](https://github.com/niakw/nanoDNS-13.60)** provides a complete ELF with the same 124-rule default policy plus compiled mandatory masks and runtime hardening. **Its 0.4-13.60.2 release passed a user startup, blocked A-query and normal shutdown/power-on trial on PS5 firmware 13.60.** No hardware validation is claimed for other PS5 firmware or PS4.
+
+[Download our 13.60 Release](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Ready-to-copy ZIP](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip). The ZIP installs an ELF as well as the INI; do not run it alongside the original payload.
 
 ## Key distinction
 

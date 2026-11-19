@@ -18,7 +18,15 @@ Ce tableau compare les **réglages livrés par défaut**, pas les possibilités 
 | Chargements en doublon | Arrêt brutal de l'ancien processus | Dépend du binaire | Écoute exclusive, pas d'arrêt brutal |
 | Historique des logs | Remplacé au démarrage | Dépend du binaire | Journal précédent conservé |
 | Absence totale de fuite réseau | **Non garantie** | **Non garantie** | **Non garantie** |
-| Extinction/réveil 13.60 validés | Non établi | Sans objet | **Validation matérielle attendue** |
+| Extinction/rallumage sur 13.60 | Non établi | Sans objet | **Essai utilisateur réussi sur PS5 13.60, version 0.4-13.60.2** ; veille/reprise non validée |
+
+## Quel nanoDNS choisir ?
+
+Tu peux conserver **[le nanoDNS original de Drakmor](https://github.com/drakmor/nanoDNS)** et simplement utiliser notre `nanodns.ini` de 124 règles. En alternative, notre **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-13.60)** fournit un véritable ELF indépendant, avec règles obligatoires intégrées au programme et protections supplémentaires du moteur DNS et du processus.
+
+**La Release 0.4-13.60.2 a été testée sur PS5 firmware 13.60 :** démarrage, blocage DNS A et extinction/rallumage réussis selon le testeur. **Les autres firmwares PS5 et la PS4 ne sont pas validés par des utilisateurs** ; la veille/reprise et l'endurance restent hors du périmètre de cette validation.
+
+[Notre Release 13.60](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Télécharger le ZIP ELF + INI](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip). Ne pas lancer simultanément notre ELF et celui de Drakmor.
 
 ## Pourquoi garder éventuellement le fork ?
 
