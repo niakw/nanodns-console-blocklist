@@ -1,9 +1,9 @@
-# Safe installation — PS4 / PS5 (nanoDNS v0.4)
+# Safe installation — target consoles (nanoDNS v0.4)
 
 **Goal:** install the selective 124-rule profile while **minimizing unfiltered network exposure**. This is an operational checklist, not a claim that DNS filtering stops every network connection. Read the [threat model](THREAT_MODEL.md) before connecting an Internet-facing console.
 
 > [!CAUTION]
-> **Never assume the PS4/PS5 is protected just because the `nanodns.ini` file exists. nanoDNS must be running, console DNS must point to it, and the relevant DNS queries must be observed matching an override.**
+> **Never assume the target consoles is protected just because the `nanodns.ini` file exists. nanoDNS must be running, console DNS must point to it, and the relevant DNS queries must be observed matching an override.**
 >
 > For the **first boot, firmware-sensitive consoles should remain isolated from the public Internet** until the sequence below has been checked. The only way to exclude *all* pre-payload/direct-IP traffic is a separately enforced network restriction (router/firewall/WAN isolation). This blocklist alone cannot promise zero leaks.
 
@@ -11,7 +11,7 @@
 
 | Your priority | Recommended network posture |
 | --- | --- |
-| **No outbound Internet before payload/filter validation** | Keep PS4/PS5 on an isolated LAN with **WAN denied externally** while you prepare, load nanoDNS and validate it. |
+| **No outbound Internet before payload/filter validation** | Keep target consoles on an isolated LAN with **WAN denied externally** while you prepare, load nanoDNS and validate it. |
 | **Internet for selected homebrew/emulator services after validation** | Use this selective policy and re-enable WAN **only after** the checks below; understand the remaining DNS bypass and direct-IP risks. |
 | **Absolutely no external connection to console/publisher infrastructure** | DNS-only cannot certify that property. Keep an independent firewall / WAN restriction in place; prefer local-only tools. |
 
@@ -23,8 +23,8 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
 
 ## 1 — Offline preflight (WAN still denied)
 
-- [ ] Confirm you can start your homebrew loader **without depending on PSN or an unfiltered public DNS**. Record the path before restarting.
-- [ ] Disable the PS4/PS5's **automatic system-software downloads/installations** and **automatic game/app updates** in available settings. Menu names depend on console/firmware.
+- [ ] Confirm you can start your homebrew loader **without depending on platform network or an unfiltered public DNS**. Record the path before restarting.
+- [ ] Disable the target consoles's **automatic system-software downloads/installations** and **automatic game/app updates** in available settings. Menu names depend on console/firmware.
 - [ ] Disable Internet-connected rest-mode behaviors if you do not need them.
 - [ ] Check for **previously downloaded/pending update packages**; a DNS filter does not remove or prevent installation of an already-downloaded update. Do **not** trigger an update check as a test.
 - [ ] Ensure local transfer/FTP access works *inside the isolated LAN*. If not, use an offline storage method where supported.
@@ -90,7 +90,7 @@ If the INI did not load, any listener is missing, the version is incompatible, o
 
 ## 4 — Configure BOTH console DNS fields (still isolated)
 
-On PS5, go to **Settings → Network → Settings → Set Up Internet Connection → select connection → Advanced Settings → DNS Settings: Manual**. The exact menus on PS4 or different system languages may differ.
+On console, go to **Settings → Network → Settings → Set Up Internet Connection → select connection → Advanced Settings → DNS Settings: Manual**. The exact menus on console or different system languages may differ.
 
 | Console network setting | Value |
 | --- | --- |
@@ -103,23 +103,23 @@ On PS5, go to **Settings → Network → Settings → Set Up Internet Connection
 
 **Never enter `1.1.1.1`, `9.9.9.9`, `8.8.8.8` or a public/community DNS as the console's secondary resolver.** This may bypass your local rules. The console fields use an IPv4 loopback address; `bind6=::1` makes nanoDNS listen on IPv6 loopback but **does not establish that every possible IPv6 or alternative-resolver path is controlled**.
 
-Save the settings. If the console reports a failed PlayStation Network / Internet connection test, **do not 'fix' it by switching to automatic or public DNS**. Tests that contact PSN can fail **precisely because the rules blocked PSN**.
+Save the settings. If the console reports a failed platform services Network / Internet connection test, **do not 'fix' it by switching to automatic or public DNS**. Tests that contact platform network can fail **precisely because the rules blocked platform network**.
 
 **Checkpoint D:** both displayed DNS settings read `127.0.0.1`; WAN still denied.
 
 ## 5 — Confirm actual DNS interception, not just startup
 
-Keep the WAN gate closed. Examine `/data/nanodns/nanodns.log` **after** changing the PS4/PS5 network settings. If the console makes a normal background request for a blocked Sony name, you should see entries resembling:
+Keep the WAN gate closed. Examine `/data/nanodns/nanodns.log` **after** changing the target consoles network settings. If the console makes a normal background request for a blocked platform operator name, you should see entries resembling:
 
 ```text
-[nanodns] query from=127.0.0.1:... qname=ps5.np.playstation.net qtype=A(1) ...
-[nanodns] override matched *playstation* -> 0.0.0.0 for ps5.np.playstation.net
+[nanodns] query from=127.0.0.1:... qname=console.np.platform services.net qtype=A(1) ...
+[nanodns] override matched *platform services* -> 0.0.0.0 for console.np.platform services.net
 [nanodns] response via=override ... qtype=A(1) ... answers=1
 [nanodns]   answer[0] ... data=0.0.0.0
 [nanodns] response via=override-nodata ... qtype=AAAA(28) ... answers=0
 ```
 
-The A and AAAA entries may occur separately. **A response code of `NOERROR` does not mean the Sony service was allowed**: for blocked A records the data is `0.0.0.0`; for blocked AAAA records the answer set is empty.
+The A and AAAA entries may occur separately. **A response code of `NOERROR` does not mean the platform operator service was allowed**: for blocked A records the data is `0.0.0.0`; for blocked AAAA records the answer set is empty.
 
 - [ ] **Observed at least one `query from=127.0.0.1` after DNS change**.
 - [ ] **Observed at least one `override matched` for a known blocked domain**, or verified the resolver using a deliberately issued DNS query from an *on-console* tool if available.
@@ -128,11 +128,11 @@ The A and AAAA entries may occur separately. **A response code of `NOERROR` does
 
 **If no DNS requests appear, the log cannot confirm filtering.** It may mean that no DNS request has occurred, that caches are being used, that traffic is bypassing nanoDNS or that the network settings did not take effect. **Do not remove the external WAN restriction on that basis.**
 
-**Avoid testing via “check for system update”, PSN sign-in, Store login or a live firmware download.** Passive log inspection and safe, locally generated queries are preferred.
+**Avoid testing via “check for system update”, platform network sign-in, Store login or a live firmware download.** Passive log inspection and safe, locally generated queries are preferred.
 
 ### Testing from a Mac? Important
 
-`dig @127.0.0.1 ...` **on your Mac queries the Mac**, not the PS5. Conversely `dig @<PS5-LAN-IP> ...` normally fails with this configuration because nanoDNS is deliberately listening on **loopback only** (`bind=127.0.0.1`). Do **not** change to `bind=0.0.0.0` merely for testing without understanding the LAN exposure.
+`dig @127.0.0.1 ...` **on your Mac queries the Mac**, not the console. Conversely `<blocked-hostname-from-INI>` normally fails with this configuration because nanoDNS is deliberately listening on **loopback only** (`bind=127.0.0.1`). Do **not** change to `bind=0.0.0.0` merely for testing without understanding the LAN exposure.
 
 **Checkpoint E:** console-side interception observed and response behavior checked. This remains DNS-only evidence.
 
@@ -167,9 +167,9 @@ If the access you need fails, **do not 'fix' it by setting automatic DNS or a pu
 | No DNS resolution | Confirm `bind=127.0.0.1`, both console DNS fields, process/listener and file path. |
 | First log says fewer than **124** rules | Restore this repository's exact `nanodns.ini`, restart payload; max is **128** rules. |
 | No `query from=` after DNS change | Recheck console network settings; inspect whether an application really generated a DNS lookup. |
-| Sony hostname resolves publicly | Keep WAN blocked; verify the DNS path is actually loopback and the hostname matches a rule. |
-| Internet connection test shows failure | Sony connectivity tests may call intentionally blocked Sony endpoints; use an unrelated allowed service instead. |
-| Site / emulator metadata breaks | Inspect the queried hostname. Broad brand masks or `a192.d.akamai.net` may cause collateral blocking. |
+| platform operator hostname resolves publicly | Keep WAN blocked; verify the DNS path is actually loopback and the hostname matches a rule. |
+| Internet connection test shows failure | platform operator connectivity tests may call intentionally blocked platform operator endpoints; use an unrelated allowed service instead. |
+| Site / emulator metadata breaks | Inspect the queried hostname. Broad brand masks or `<hostname-or-mask-from-the-INI>` may cause collateral blocking. |
 | No Internet after reboot | Expected while nanoDNS is not running and both DNS fields point at loopback. Start it first. |
 | Cannot use a public DNS-dependent loader while isolated | **Do not assume a leak-free setup is possible**. Prefer a local bootstrapping route or enforce an external firewall. |
 | Want to revert | While WAN isolated, restore the backup INI and restart nanoDNS; only change console DNS to other values if you deliberately accept the resulting exposure. |
@@ -178,7 +178,7 @@ If the access you need fails, **do not 'fix' it by setting automatic DNS or a pu
 
 - nanoDNS v0.4 **overwrites its log on every start**. Collect a diagnostic copy **before restarting** to preserve evidence.
 - It can log frequent retries to a blocked name, including many AAAA queries; repetition alone does not mean the filter failed.
-- This policy intentionally blocks **publisher authentication, service and update domains**, so PlayStation Store/PSN and many legitimate online game features are expected to fail.
+- This policy intentionally blocks **publisher authentication, service and update domains**, so platform services Store/platform network and many legitimate online game features are expected to fail.
 - Publisher-owned hostnames may change; an absence of unblocked domains in one log is **not** proof of exhaustive coverage.
 - Redact IPs, usernames, account names, tokens and local device identifiers before sharing logs publicly.
 - Disable automatic update/download settings independently; keep a backup of the tested configuration.

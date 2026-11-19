@@ -1,6 +1,6 @@
-# Installation sécurisée — PS4 / PS5 (nanoDNS v0.4)
+# Installation sécurisée — target consoles (nanoDNS v0.4)
 
-**Objectif :** installer les **124 règles sélectives** sans exposer inutilement la console aux serveurs Sony, Nintendo, Xbox ou aux éditeurs pendant la configuration. Ce guide réduit les risques de fuite DNS, mais **un DNS n'est pas un pare-feu**. Voir [les limites de sécurité](THREAT_MODEL.md).
+**Objectif :** installer les **124 règles sélectives** sans exposer inutilement la console aux serveurs platform operator, other console ecosystem, other console ecosystem ou aux éditeurs pendant la configuration. Ce guide réduit les risques de fuite DNS, mais **un DNS n'est pas un pare-feu**. Voir [les limites de sécurité](THREAT_MODEL.md).
 
 > [!CAUTION]
 > **Avoir un fichier `nanodns.ini` sur le disque ne suffit pas.** Le payload doit fonctionner, les deux DNS de la console doivent pointer vers `127.0.0.1`, puis les journaux doivent montrer de véritables requêtes interceptées.
@@ -13,7 +13,7 @@ Choisir la situation adaptée :
 
 | Besoin | Mesure |
 | --- | --- |
-| Préparer sans aucune connexion Internet PS4/PS5 | Réseau **local uniquement** avec accès WAN bloqué sur la box / le pare-feu pour la console, **IPv4 et IPv6**. |
+| Préparer sans aucune connexion Internet target consoles | Réseau **local uniquement** avec accès WAN bloqué sur la box / le pare-feu pour la console, **IPv4 et IPv6**. |
 | Garder Internet partiellement utilisable ensuite | Retirer temporairement le blocage WAN **après** tous les contrôles, en acceptant les risques résiduels DNS/IP. |
 | Empêcher absolument tout contact extérieur | Garder une **restriction réseau indépendante**. Une blocklist DNS seule ne le garantit pas. |
 
@@ -26,7 +26,7 @@ Une isolation **LAN sans WAN** permet de continuer à utiliser un ordinateur et 
 ## 1 — Préparation hors ligne
 
 - [ ] Bloquer le WAN de la console **avant** de l'allumer / de modifier la configuration.
-- [ ] Confirmer que le loader est accessible **en local et sans PSN**.
+- [ ] Confirmer que le loader est accessible **en local et sans platform network**.
 - [ ] Désactiver les **téléchargements et installations automatiques** du logiciel système et des jeux/applications dans les paramètres disponibles.
 - [ ] Désactiver la connexion Internet en mode repos si elle n'est pas nécessaire.
 - [ ] Vérifier les **mises à jour déjà téléchargées ou en attente** : un DNS ne les supprime pas et n'empêche pas leur installation locale.
@@ -61,7 +61,7 @@ Une isolation **LAN sans WAN** permet de continuer à utiliser un ordinateur et 
 
 5. Conserver les **124 règles / 0 exception** ; nanoDNS v0.4 limite la configuration à **128 règles**.
 
-Les deux résolveurs Quad9 `9.9.9.9` et `149.112.112.112` sont **uniquement les DNS amont de nanoDNS** pour les domaines non bloqués. Ils appartiennent au **même fournisseur**, sans relais Cloudflare, et ne chiffrent pas les échanges UDP DNS. **Ils ne doivent pas être indiqués dans les deux champs DNS de la PS5.**
+Les deux résolveurs Quad9 `9.9.9.9` et `149.112.112.112` sont **uniquement les DNS amont de nanoDNS** pour les domaines non bloqués. Ils appartiennent au **même fournisseur**, sans relais an alternate resolver provider, et ne chiffrent pas les échanges UDP DNS. **Ils ne doivent pas être indiqués dans les deux champs DNS de la console.**
 
 **Contrôle B :** bon chemin, bon fichier, sauvegarde conservée ; WAN toujours bloqué.
 
@@ -85,7 +85,7 @@ NanoDNS v0.4
 [nanodns] listening on [::1]:53
 ```
 
-Ces lignes confirment que le processus a **chargé sa configuration et écoute le DNS**. **Elles ne prouvent pas encore que la PS5 utilise ce DNS !**
+Ces lignes confirment que le processus a **chargé sa configuration et écoute le DNS**. **Elles ne prouvent pas encore que la console utilise ce DNS !**
 
 En cas d'absence du listener, de mauvais nombre de règles ou d'erreur de chargement, **ne pas rétablir Internet**.
 
@@ -93,7 +93,7 @@ En cas d'absence du listener, de mauvais nombre de règles ou d'erreur de charge
 
 ## 4 — Modifier les DEUX champs DNS de la console (WAN toujours bloqué)
 
-**PS5 :** Paramètres → Réseau → Paramètres → Configurer la connexion Internet → sélectionner la connexion → Paramètres avancés → Paramètres DNS : Manuel. Les libellés PS4 et certaines langues diffèrent.
+**console :** Paramètres → Réseau → Paramètres → Configurer la connexion Internet → sélectionner la connexion → Paramètres avancés → Paramètres DNS : Manuel. Les libellés console et certaines langues diffèrent.
 
 | Champ | Valeur |
 | --- | --- |
@@ -108,7 +108,7 @@ En cas d'absence du listener, de mauvais nombre de règles ou d'erreur de charge
 
 Dans le fichier, `bind6=::1` active l'écoute DNS en IPv6 local ; cela **ne garantit pas** que toute communication IPv6 ou tout autre résolveur sera intercepté.
 
-Un échec du test de connexion PlayStation Network peut être **normal** puisque PSN est volontairement bloqué. **Ne pas remettre les DNS en automatique pour contourner ce test.**
+Un échec du test de connexion platform services Network peut être **normal** puisque platform network est volontairement bloqué. **Ne pas remettre les DNS en automatique pour contourner ce test.**
 
 **Contrôle D :** les deux DNS affichés sont `127.0.0.1` ; WAN toujours bloqué.
 
@@ -117,8 +117,8 @@ Un échec du test de connexion PlayStation Network peut être **normal** puisque
 Lire **à nouveau** `/data/nanodns/nanodns.log` et chercher des événements récents. Exemple réel du profil :
 
 ```text
-[nanodns] query from=127.0.0.1:... qname=ps5.np.playstation.net qtype=A(1) ...
-[nanodns] override matched *playstation* -> 0.0.0.0 for ps5.np.playstation.net
+[nanodns] query from=127.0.0.1:... qname=console.np.platform services.net qtype=A(1) ...
+[nanodns] override matched *platform services* -> 0.0.0.0 for console.np.platform services.net
 [nanodns] response via=override ... qtype=A(1) ... answers=1
 [nanodns]   answer[0] ... data=0.0.0.0
 [nanodns] response via=override-nodata ... qtype=AAAA(28) ... answers=0
@@ -134,9 +134,9 @@ Checklist :
 
 **Aucune requête dans les logs ?** On ne peut pas confirmer la protection. Cela peut venir d'un cache, d'aucune activité réseau, d'un contournement DNS ou d'un mauvais réglage. **Garder le WAN bloqué** en attendant le diagnostic.
 
-Ne surtout **pas** déclencher volontairement une vérification de mise à jour système, une connexion PSN ou un téléchargement de firmware pour tester.
+Ne surtout **pas** déclencher volontairement une vérification de mise à jour système, une connexion platform network ou un téléchargement de firmware pour tester.
 
-**Depuis un Mac :** `dig @127.0.0.1 ...` teste le DNS **du Mac**, pas celui de la PS5 ! Et `dig @<IP-LAN-PS5>` ne fonctionne normalement pas puisque nanoDNS n'écoute que l'adresse loopback de la console. Ne pas modifier `bind` en `0.0.0.0` juste pour faire ce test.
+**Depuis un Mac :** `dig @127.0.0.1 ...` teste le DNS **du Mac**, pas celui de la console ! Et `<blocked-hostname-from-INI>` ne fonctionne normalement pas puisque nanoDNS n'écoute que l'adresse loopback de la console. Ne pas modifier `bind` en `0.0.0.0` juste pour faire ce test.
 
 **Contrôle E :** blocage réellement observé dans les logs console ; ce n'est pas une preuve d'absence de connexion IP directe.
 
@@ -167,13 +167,13 @@ Ne surtout **pas** déclencher volontairement une vérification de mise à jour 
 | Pas de connexion après redémarrage | Relancer nanoDNS ; les DNS loopback ne fonctionnent pas sans lui. |
 | `config loaded` ne montre pas 124 règles / 0 exception | Restaurer le bon fichier `nanodns.ini`, relancer ; maximum 128 règles. |
 | Aucun `query from` après modification | Vérifier les deux champs DNS et produire une requête bénigne depuis un outil **sur la console**, si disponible. |
-| Un domaine Sony obtient une vraie IP publique | Laisser WAN bloqué et vérifier résolveur, cache, exceptions et correspondance des règles. |
-| Test Internet / PSN de la console échoue | C'est compatible avec le blocage volontaire de Sony ; utiliser un service tiers autorisé pour diagnostiquer. |
-| Un service légitime ne fonctionne plus | Vérifier les règles larges `*sony*`, `*nintendo*` et `a192.d.akamai.net`. |
+| Un domaine platform operator obtient une vraie IP publique | Laisser WAN bloqué et vérifier résolveur, cache, exceptions et correspondance des règles. |
+| Test Internet / platform network de la console échoue | C'est compatible avec le blocage volontaire de platform operator ; utiliser un service tiers autorisé pour diagnostiquer. |
+| Un service légitime ne fonctionne plus | Vérifier les règles larges `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>` et `<hostname-or-mask-from-the-INI>`. |
 | Impossible de lancer le loader hors ligne | **Ne pas supposer la protection garantie.** Préparer un accès local ou un pare-feu extérieur. |
 | Retour arrière nécessaire | **WAN bloqué**, restaurer `nanodns.ini.bak`, relancer le payload ; changer les DNS console seulement en comprenant les risques. |
 
-**Maintenance :** nanoDNS v0.4 réécrit son fichier de logs **à chaque lancement**. Sauvegarder le journal avant de redémarrer si l'on veut conserver les traces. Les tentatives répétées `AAAA` sur PSN n'indiquent pas nécessairement un défaut. Masquer les données personnelles des logs partagés publiquement.
+**Maintenance :** nanoDNS v0.4 réécrit son fichier de logs **à chaque lancement**. Sauvegarder le journal avant de redémarrer si l'on veut conserver les traces. Les tentatives répétées `AAAA` sur platform network n'indiquent pas nécessairement un défaut. Masquer les données personnelles des logs partagés publiquement.
 
 **Note importante :** des mises à jour déjà téléchargées peuvent être installées sans aucun DNS ; désactiver leur installation automatique reste indispensable. Une liste DNS sélective n'empêche pas non plus un jeu/émulateur d'utiliser une IP en dur.
 

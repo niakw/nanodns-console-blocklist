@@ -4,7 +4,7 @@ All notable updates to the policy and validation suite are recorded here.
 
 ## [Unreleased]
 
-- **2026-11-19: Quad9-only upstreams.** Replaced Cloudflare (`1.1.1.1`) + Quad9 with Quad9's security-filtering primary (`9.9.9.9`) and backup (`149.112.112.112`), keeping the existing **124 overrides / 0 exceptions** intact.
+- **2026-11-19: Quad9-only upstreams.** Replaced an alternate resolver provider (`1.1.1.1`) + Quad9 with Quad9's security-filtering primary (`9.9.9.9`) and backup (`149.112.112.112`), keeping the existing **124 overrides / 0 exceptions** intact.
 - Updated English/French install guides, source attribution, tests and expected startup logs. This is a configuration change; **no new hardware validation is claimed**.
 
 - Replaced abbreviated installation guidance with a safety-first **LAN-only / WAN-denied** workflow and stage-by-stage verification.
@@ -18,8 +18,8 @@ All notable updates to the policy and validation suite are recorded here.
 ## [0.1.0] — 2026-10-10
 
 - Initial **selective** `nanodns.ini` publication: **124 override rules / 0 exceptions**.
-- Covers PlayStation, Nintendo, Xbox, and selected game-publisher families; retains upstream DNS for all unlisted names.
-- Includes exact `a192.d.akamai.net` alias (known shared-CDN collateral-risk).
-- PS5 nanoDNS v0.4 field log confirms policy load and override responses for *observed* PlayStation hostnames; broader compatibility remains unverified.
+- Covers platform services, other console ecosystem, other console ecosystem, and selected game-publisher families; retains upstream DNS for all unlisted names.
+- Includes exact `<hostname-or-mask-from-the-INI>` alias (known shared-CDN collateral-risk).
+- console nanoDNS v0.4 field log confirms policy load and override responses for *observed* platform services hostnames; broader compatibility remains unverified.
 
 > `0.1.0` denotes an initial repository baseline, **not** a GitHub Release or a claim of complete platform coverage.

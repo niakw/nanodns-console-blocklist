@@ -6,13 +6,13 @@ This file is a **selective DNS denylist** for the independent nanoDNS payload.
 
 - Intercept **DNS lookups handled by a running nanoDNS instance**.
 - Return `0.0.0.0` for matching A requests; for matching AAAA requests nanoDNS v0.4 returns a successful response with **no IPv6 answer**.
-- Reduce selected accidental DNS-based contact to PlayStation, Nintendo, Xbox and game-publisher names.
+- Reduce selected accidental DNS-based contact to platform services, other console ecosystem, other console ecosystem and game-publisher names.
 - Resolve unlisted domains through **Quad9's security-filtering service** (`9.9.9.9`, `149.112.112.112`), enabling **selective** Internet access.
 - Both upstream IPs belong to **one provider**. Plain DNS forwarding to these addresses uses UDP, not DNS-over-TLS/HTTPS; Quad9's DNSSEC validation does not constitute end-to-end DNS authentication at nanoDNS.
 
 ## Explicitly out of scope
 
-- **No promise** that PS4/PS5 firmware updates or game updates are impossible.
+- **No promise** that target consoles firmware updates or game updates are impossible.
 - Connections made **before nanoDNS starts**, on a different DNS resolver, with cached addresses, through DNS-over-HTTPS/TLS/TCP or directly to an IPv4/IPv6 address.
 - Firewalling, TLS interception, packet inspection, emulator/game anti-cheat bypass, anonymity or guaranteed console account safety.
 - Detection of every future endpoint or opaque CDN hostname.
@@ -38,8 +38,8 @@ A network firewall can enforce destination IP/port policies outside the console 
 
 ## False positives
 
-- `*sony*`, `*playstation*`, `*nintendo*` match **any** hostname containing those character sequences, including unrelated domains.
-- `a192.d.akamai.net` is an **exact** name, but historically associated with Sony while using a **shared** CDN operator.
+- `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>` match **any** hostname containing those character sequences, including unrelated domains.
+- `<hostname-or-mask-from-the-INI>` is an **exact** name, but historically associated with platform operator while using a **shared** CDN operator.
 - Entire game publisher domains are blocked, including websites, sign-in and updates that some users may want.
 
 No diagnostic log or user test data is committed by default. Public reports should omit tokens, usernames, cookies and identifiable network metadata.

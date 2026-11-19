@@ -4,7 +4,7 @@
 
 This is a community-maintained **DNS configuration**, not a security appliance. There is **no guarantee** that firmware updates, account communication, telemetry, game updates, direct IP traffic or third-party endpoints are fully blocked.
 
-The current shipped configuration targets **nanoDNS v0.4** and was observed loading on **PS5 firmware 13.60**. Other versions/consoles are community targets but not hardware-certified.
+The current shipped configuration targets **nanoDNS v0.4** and was observed loading on **console firmware 13.60**. Other versions/consoles are community targets but not hardware-certified.
 
 ## Reporting
 

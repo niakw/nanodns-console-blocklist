@@ -7,7 +7,7 @@ Help extend coverage **without turning the policy into an accidental global Inte
 - Prefer a specific, reproducible domain or narrow family of domains to wide, speculative matching.
 - Include a public source or **redacted** nanoDNS log indicating the hostname and what service contacted it.
 - Explain whether the change covers a console platform, game publisher, telemetry, update, login, CDN, or compatibility regression.
-- Declare possible collateral blocking on third-party or shared infrastructure (Akamai, Cloudflare, Microsoft, etc.).
+- Declare possible collateral blocking on third-party or shared infrastructure (shared CDN provider, an alternate resolver provider, platform operator, etc.).
 - Respect nanoDNS v0.4's **128-rule** ceiling; consolidate carefully and do not silently remove coverage.
 - Keep `[exceptions]` empty unless a very explicit rationale and security review justify a change.
 

@@ -1,6 +1,6 @@
 # Setup safety and startup/reboot risks
 
-**Policy mode: SELECTIVE, Quad9-only upstreams.** The `nanodns.ini` uses `9.9.9.9` then `149.112.112.112`, both security-filtering Quad9 addresses for permitted domains. No Cloudflare or other-provider fallback. Ordinary upstream DNS uses unencrypted UDP. This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
+**Policy mode: SELECTIVE, Quad9-only upstreams.** The `nanodns.ini` uses `9.9.9.9` then `149.112.112.112`, both security-filtering Quad9 addresses for permitted domains. No an alternate resolver provider or other-provider fallback. Ordinary upstream DNS uses unencrypted UDP. This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
 
 ## Boot leak window
 
@@ -20,6 +20,6 @@ A **running DNS proxy is a prerequisite**, not a property of a saved file. Befor
 - `override matched` plus `data=0.0.0.0` for A (or no answers for AAAA) demonstrates the **specific lookup was blocked**.
 - An unlisted domain such as `github.com` successfully forwarded upstream demonstrates **selective DNS forwarding for that query**.
 
-**None** proves every PSN/publisher endpoint is known, that all IPv6/IP traffic is blocked, that updates cannot install, or that networking cannot bypass the resolver.
+**None** proves every platform network/publisher endpoint is known, that all IPv6/IP traffic is blocked, that updates cannot install, or that networking cannot bypass the resolver.
 
 See **[complete install procedure (EN)](INSTALL.md)** and **[procédure sécurisée (FR)](INSTALL.fr.md)**.
