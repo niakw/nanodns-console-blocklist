@@ -37,12 +37,35 @@ class PresentationContract(unittest.TestCase):
     self.assertIn(term,s)
 
  def test_no_visible_vendor_marking(self):
+  # The specific firmware target is necessary when presenting our tested
+  # nanoDNS 13.60 alternative. Do not permit other vendor names globally.
+  runtime_docs={
+   "README.md", "README.fr.md",
+   "docs/COMPARISON.md", "docs/COMPARISON.fr.md",
+   "CHANGELOG.md", "CHANGELOG.fr.md"
+  }
   for file in ROOT.rglob("*.md"):
    s=file.read_text(encoding="utf-8")
    s=re.sub(r"\]\([^)]*\)","]()",s)
    s=re.sub(r"https?://[^\s)>]+","",s)
-   match=BRANDS.search(s)
-   self.assertIsNone(match, f"{file.relative_to(ROOT)}: {match.group(0) if match else ''}")
+   rel=file.relative_to(ROOT).as_posix()
+   permitted={"ps5","ps4"} if rel in runtime_docs else set()
+   match=next((m for m in BRANDS.finditer(s) if m.group(0).lower() not in permitted),None)
+   self.assertIsNone(match, f"{rel}: {match.group(0) if match else ''}")
+
+ def test_firmware_specific_runtime_recommendation(self):
+  expected="https://github.com/niakw/nanoDNS-13.60"
+  for path in ("README.md","README.fr.md","docs/COMPARISON.md","docs/COMPARISON.fr.md"):
+   s=(ROOT/path).read_text(encoding="utf-8")
+   with self.subTest(file=path):
+    self.assertIn(expected,s)
+    self.assertIn("13.60",s)
+    self.assertIn("PS5",s)
+    self.assertIn("0.4-13.60.2",s)
+  en=(ROOT/"README.md").read_text(encoding="utf-8")
+  fr=(ROOT/"README.fr.md").read_text(encoding="utf-8")
+  self.assertIn("Other PS5 firmwares and PS4 have not been user-validated",en)
+  self.assertIn("Les autres firmwares PS5 et la PS4 ne sont pas validés",fr)
 
  def test_internal_markdown_links(self):
   for file in ROOT.rglob("*.md"):
