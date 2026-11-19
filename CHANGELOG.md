@@ -1,25 +1,21 @@
 # Changelog
 
-All notable updates to the policy and validation suite are recorded here.
+**Language:** English (default) · [Français](CHANGELOG.fr.md)
 
-## [Unreleased]
+## Unreleased — 2026-11-19
 
-- **2026-11-19: Quad9-only upstreams.** Replaced an alternate resolver provider (`1.1.1.1`) + Quad9 with Quad9's security-filtering primary (`9.9.9.9`) and backup (`149.112.112.112`), keeping the existing **124 overrides / 0 exceptions** intact.
-- Updated English/French install guides, source attribution, tests and expected startup logs. This is a configuration change; **no new hardware validation is claimed**.
+- **Quad9-only upstreams:** use `9.9.9.9` and `149.112.112.112` for the same secure, threat-blocking service. No secondary external provider.
+- Keep the **124 deny rules** and **zero default exceptions** unchanged.
+- Rebuild marketing-focused English and French README files, with accurate original-versus-blocklist-versus-hardened-fork comparisons.
+- Add explicit links to the correct-language installation manuals, source acknowledgements, security boundaries and published evidence.
+- Document safe startup, independent router/firewall requirements, and the distinction between config-only and binary-enforced safeguards.
+- Add policy and documentation regression checks.
 
-- Replaced abbreviated installation guidance with a safety-first **LAN-only / WAN-denied** workflow and stage-by-stage verification.
-- Added full **English and French** instructions: backup the exact INI, launch/restart loader and payload, read startup logs, set both console DNS fields to loopback, inspect actual blocked queries, and cautiously re-enable selective Internet only when residual risk is acceptable.
-- Documented cold boot, rest mode, loader bootstrap gaps, DNS-vs-IP fail-closed behavior, upstream testing, log rotation, rollback and troubleshooting.
-- Added documentation contract tests to CI; at that stage there were **no DNS rule or upstream changes** (the Quad9-only change is documented above).
+## 0.1.0 — 2026-10-10
 
-- Community beta documentation, reproducible static checks and contribution/security guidance.
-- Roadmap: evaluate longer-duration logs, check unlisted console/publisher traffic and false positives before a versioned stable release.
+- Initial selective blocklist with **124 DNS overrides and zero exceptions**.
+- Coverage expanded beyond the original resolver's **eight default patterns** across several console generations, selected publisher families and historical aliases.
+- Console logs confirmed interception of observed DNS lookups; **not** complete coverage of all network traffic.
+- Supplied static tests and source attribution.
 
-## [0.1.0] — 2026-10-10
-
-- Initial **selective** `nanodns.ini` publication: **124 override rules / 0 exceptions**.
-- Covers platform services, other console ecosystem, other console ecosystem, and selected game-publisher families; retains upstream DNS for all unlisted names.
-- Includes exact `<hostname-or-mask-from-the-INI>` alias (known shared-CDN collateral-risk).
-- console nanoDNS v0.4 field log confirms policy load and override responses for *observed* platform services hostnames; broader compatibility remains unverified.
-
-> `0.1.0` denotes an initial repository baseline, **not** a GitHub Release or a claim of complete platform coverage.
+> A changelog entry, CI success or source-only test is not proof of hardware shutdown safety, complete network isolation or operating-system update prevention.

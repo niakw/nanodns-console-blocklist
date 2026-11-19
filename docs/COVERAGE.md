@@ -1,49 +1,44 @@
-# Coverage, evidence & verification
+# Coverage & evidence
 
-> **Scope:** A list of known or brand-matched **DNS hostnames**. Platform branding does not imply complete coverage of every online service.
+**Language:** English (default) · [Français](COVERAGE.fr.md)
 
-| Family | Current coverage approach | Hardware verification |
+> A stronger **hostname blocklist** is not the same as complete network isolation. This project documents which patterns are included, what has been observed, and what remains untested.
+
+## Scope by category
+
+| Target family | Policy coverage | Evidence |
 | --- | --- | --- |
-| platform operator / platform network / console / target consoles | Brand masks plus SIE, platform network and shared CDN provider-specific names | **console 13.60: observed platform operator queries blocked**, not exhaustive |
-| other console ecosystem (legacy/legacy console/3DS/legacy console U/legacy console/legacy console 2) | Brand masks and `legacy console.com` family | Static matching only |
-| other console ecosystem / 360 / One / Series | other console ecosystem-branded domains, other console ecosystem Live/Services, selected CDN names | Static matching only |
-| game publisher / game publisher / Take-Two / game publisher | Core publisher brands and service domains | Static matching only |
-| game publisher / game publisher / game publisher / CD Projekt / game publisher | Selected families and brand subdomains | Static matching only |
-| game publisher / game publisher / Square Enix / game publisher game publisher | Selected brand families | Static matching only |
+| Primary console ecosystem | Broad brand-like masks, update/service names, historical aliases | Matching DNS lookups observed on firmware 13.60 |
+| Additional console generations | Known legacy families, service names and update-related patterns | Offline tests; not exhaustively tested on hardware |
+| Publisher and gaming services | Selected publisher hostname families | Offline tests; not exhaustively tested on hardware |
+| Shared delivery infrastructure | Selected exact aliases, not a global CDN ban | Intentionally broad-risk; possible false positives |
+| Ordinary development/media websites | Not deliberately blocked by the baseline | Static negative-control tests; runtime reachability depends on network |
 
-## Current resolver policy versus historic console proof
+## Real evidence (10 October 2026)
 
-The repository now configures only Quad9's secure IPv4 resolver pair (`9.9.9.9`, `149.112.112.112`) for authorized names. The observations below were captured **before** this change; they do not prove current resolver fallback or the new configuration has been tested on console.
+A console log from the original nanoDNS v0.4, using the **124-rule / 0-exception profile**, confirmed:
 
-## What the console log showed (10 October 2026)
+- The payload loaded all 124 rules and zero exception entries.
+- It listened locally on IPv4 `127.0.0.1:53` and IPv6 `[::1]:53`.
+- Observed target hostnames matched local override rules.
+- For blocked A queries, the resolver replied with `0.0.0.0`. For matching AAAA queries, it returned no IPv6 answer.
+- Repeated background queries were visible in that test session.
 
-A user-provided nanoDNS v0.4 startup/operation log showed:
+These observations do **not** demonstrate coverage of all possible endpoints, absence of direct-IP traffic, or successful blocking before payload startup. The **2026-11-19 Quad9 resolver change** was not part of the older console run and is not claimed to be hardware-validated by it.
 
-- `124 rule(s)`, `0 exception(s)`, two upstreams and listeners on IPv4 `127.0.0.1:53` and IPv6 `[::1]:53`;
-- platform operator/platform services DNS names such as `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>` and `<hostname-or-mask-from-the-INI>` matched local override rules;
-- queried A records returned `0.0.0.0`, while matching AAAA queries returned `NOERROR` with **zero answers**;
-- many repeated queries for `<hostname-or-mask-from-the-INI>`.
+## What is new relative to the original defaults?
 
-This is useful evidence that **observed DNS lookups** were intercepted. It is **not** evidence that no unlisted names resolve, all upstream Internet access works, or firmware updating is impossible. No full packet-capture or end-to-end update attempt was performed.
+- **8 → 124** shipped override patterns.
+- **6 → 0** default bypass exceptions.
+- **Three mixed upstreams → a single Quad9 security-filtering service** with primary `9.9.9.9` and secondary `149.112.112.112`.
+- Automated checks for policy count, duplicates, negative controls, DNS configuration, safe installation and documentation references.
 
-## Installation vs. observed coverage
+The optional [runtime fork](https://github.com/niakw/nanoDNS-13.60) adds mandatory compiled rules and packet/lifecycle checks; those properties **are not delivered by the INI file itself**. See [comparison](COMPARISON.md).
 
-The sequence matters: seeing a startup log **before** changing console DNS does not prove the console is using nanoDNS. Confirm a subsequent `query from=127.0.0.1`, `override matched`, and the expected blocked A / AAAA response in the **current** nanoDNS session. After a full reboot, check again. A public Internet connection may be re-enabled only if the user accepts that DNS-only filtering does **not** prevent direct-IP, alternate-resolver or pre-payload traffic.
+## Validation
 
-See [safe install (English)](INSTALL.md), [installation sécurisée (français)](INSTALL.fr.md) and [startup risk model](SETUP_SAFETY.md).
+Run `python3 -m unittest discover -s tests -v` from the repository root. To confirm actual resolution on a console, use the [safe install checklist](INSTALL.md), confirm its DNS settings point to loopback, then inspect *fresh logs* for a blocked hostname taken directly from the INI and a permitted hostname.
 
-## Checking rules locally
+Do not test by deliberately contacting operating-system update servers. For unknown endpoints or false positives, open a reproducible report with redacted logs and evidence. Broad masks and the exact shared-CDN entry can affect unrelated services.
 
-Run without third-party Python dependencies:
-
-```bash
-python3 -m unittest discover -s tests -v
-```
-
-Tests enforce a 124-rule baseline, no duplicate masks, no enabled exceptions, no global all-domain rule, and representative negative controls (`github.com`, `youtube.com`, etc.). Matching tests approximate the current wildcard subset used by this file; native behavior is determined by nanoDNS.
-
-## Reporting missing domains
-
-Please include the exact hostname, platform, whether the name is an observed console query or documentation-only, source link, expected DNS action, false-positive risk and reproduction steps. Sanitise public logs: they may contain local addresses, timestamps and user-identifying hostnames.
-
-**Known limitation:** broad `<hostname-or-mask-from-the-INI>` and `<hostname-or-mask-from-the-INI>` can match domains unrelated to these vendors. `<hostname-or-mask-from-the-INI>` is shared infrastructure. If you encounter a breakage, do not assume the provider is malicious; propose the narrowest adjustment supported by evidence.
+**Limit:** DNS-only filtering cannot substitute for an external IPv4/IPv6 firewall when all unwanted WAN traffic must be denied.

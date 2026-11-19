@@ -1,45 +1,38 @@
-# Threat model: what this does—and does not—protect
+# Threat model and limits
 
-This file is a **selective DNS denylist** for the independent nanoDNS payload.
+**Language:** English (default) · [Français](THREAT_MODEL.fr.md)
+
+nanoDNS Console Blocklist is a **selective policy for a local UDP DNS proxy**. Its objective is to reduce DNS lookups to known platform-service and publisher hostnames while leaving unrelated DNS available.
 
 ## In scope
 
-- Intercept **DNS lookups handled by a running nanoDNS instance**.
-- Return `0.0.0.0` for matching A requests; for matching AAAA requests nanoDNS v0.4 returns a successful response with **no IPv6 answer**.
-- Reduce selected accidental DNS-based contact to platform services, other console ecosystem, other console ecosystem and game-publisher names.
-- Resolve unlisted domains through **Quad9's security-filtering service** (`9.9.9.9`, `149.112.112.112`), enabling **selective** Internet access.
-- Both upstream IPs belong to **one provider**. Plain DNS forwarding to these addresses uses UDP, not DNS-over-TLS/HTTPS; Quad9's DNSSEC validation does not constitute end-to-end DNS authentication at nanoDNS.
+- Detect matches against **124 configured hostname patterns**.
+- Answer blocked A queries locally with `0.0.0.0` and blocked AAAA requests without IPv6 addresses, using the installed nanoDNS behavior.
+- Ship **zero default bypass exceptions** and direct permitted names to the Quad9 secure upstream pair.
+- Provide reproducible static tests and evidence-based maintenance.
 
-## Explicitly out of scope
+## Out of scope
 
-- **No promise** that target consoles firmware updates or game updates are impossible.
-- Connections made **before nanoDNS starts**, on a different DNS resolver, with cached addresses, through DNS-over-HTTPS/TLS/TCP or directly to an IPv4/IPv6 address.
-- Firewalling, TLS interception, packet inspection, emulator/game anti-cheat bypass, anonymity or guaranteed console account safety.
-- Detection of every future endpoint or opaque CDN hostname.
-- All network traffic of emulator guest systems; behavior depends on each emulator's networking implementation.
+- Direct connections to IPv4/IPv6 addresses, cached addresses or previously downloaded packages.
+- Alternative resolvers, encrypted DNS, app-specific network stacks or DNS over TCP.
+- Traffic before jailbreak/payload startup, during failed boot, or while nanoDNS is not active.
+- Hostnames absent from the list, new service infrastructure and opaque CDN aliases.
+- Firmware or game-update guarantees, anonymity, account protection or full firewall enforcement.
 
-## Preventing leaks during installation and restart
+## Startup safety
 
-**First use:** isolate the console from WAN through a router/firewall or WAN-disconnected router (IPv4 and IPv6), but retain a LAN path if you need FTP or a locally usable payload loader. Install `/data/nanodns/nanodns.ini`, launch or restart nanoDNS, inspect the initial log, set **both** console DNS fields to `127.0.0.1`, and inspect **subsequent** DNS queries for `override matched` plus a blocked response.
+**Before installation and after each cold boot**, keep the console behind an **external WAN-deny rule** if leakage is unacceptable. Deploy `/data/nanodns/nanodns.ini`, start the resolver, make both console DNS settings `127.0.0.1` and verify intercepted requests in the **current** log. A saved file and a loopback DNS value do not prove the payload is running.
 
-**Cold boot / crash:** a file on disk or console DNS pointed at loopback does not mean the payload is running. Restart it, inspect a current log, then decide whether to allow WAN. A loader that requires a public DNS host may create a separate unfiltered bootstrap interval; do not call that safe.
+If nanoDNS is absent, ordinary loopback DNS may fail, but **direct-IP access and alternate DNS may still succeed**. Only an independent router/firewall can enforce WAN isolation before startup, including IPv6.
 
-**DNS fail-closed vs Internet fail-closed:** when a console points to loopback but nanoDNS is stopped, *ordinary name resolution* usually fails. That does **not** make IP forwarding fail-closed. Direct IPv4/IPv6 IP traffic, another resolver, DNS-over-HTTPS or cached connections can still reach destinations if WAN is available.
+## Resolver and false positives
 
-See the full [English installation walkthrough](INSTALL.md), [French installation walkthrough](INSTALL.fr.md) and [startup safety checklist](SETUP_SAFETY.md).
+The two upstreams `9.9.9.9` and `149.112.112.112` are **both Quad9 secure**; they are not independent operators. Quad9 provides threat blocking and DNSSEC validation, while the original payload communicates over plaintext UDP.
 
-## Why not block everything?
+The list includes deliberately **broad vendor-name patterns** and at least one **exact name on shared CDN infrastructure**. A matching DNS hostname can be legitimate; investigate false positives with redacted logs and the narrowest supported change.
 
-A global `*=0.0.0.0` policy would prevent legitimate DNS resolution (artwork, GitHub, tools, updates of unrelated software). This project **deliberately does not include** such a rule. Instead, its known target names are blocked, with the accepted trade-off that unknown hosts may still resolve.
+## Config versus hardened runtime
 
-## Why a firewall is different
+The standalone policy file **does not force compiled mandatory rules**, sanitize arbitrary upstream answers, or fix process shutdown. Those enhancements are specific to the optional [hardened runtime fork](https://github.com/niakw/nanoDNS-13.60) and still require physical-console validation. See [technical comparison](COMPARISON.md).
 
-A network firewall can enforce destination IP/port policies outside the console and even when nanoDNS has not yet started. High-assurance firmware preservation should combine restrictive network access policy, disabled automatic updates and careful control of installed packages/media. DNS-only protection cannot offer the same guarantee.
-
-## False positives
-
-- `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>`, `<hostname-or-mask-from-the-INI>` match **any** hostname containing those character sequences, including unrelated domains.
-- `<hostname-or-mask-from-the-INI>` is an **exact** name, but historically associated with platform operator while using a **shared** CDN operator.
-- Entire game publisher domains are blocked, including websites, sign-in and updates that some users may want.
-
-No diagnostic log or user test data is committed by default. Public reports should omit tokens, usernames, cookies and identifiable network metadata.
+Read [English installation](INSTALL.md), [French installation](INSTALL.fr.md) and [startup safety](SETUP_SAFETY.md) before allowing WAN access.
