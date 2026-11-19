@@ -1,6 +1,6 @@
 # Setup safety and startup/reboot risks
 
-**Policy mode: SELECTIVE.** This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
+**Policy mode: SELECTIVE, Quad9-only upstreams.** The `nanodns.ini` uses `9.9.9.9` then `149.112.112.112`, both security-filtering Quad9 addresses for permitted domains. No Cloudflare or other-provider fallback. Ordinary upstream DNS uses unencrypted UDP. This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
 
 ## Boot leak window
 

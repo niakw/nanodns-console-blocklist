@@ -21,6 +21,8 @@ Une isolation **LAN sans WAN** permet de continuer à utiliser un ordinateur et 
 
 **Attention au loader :** si ton point d'entrée jailbreak exige un site ou un DNS public pour démarrer, il peut exister une phase non filtrée. N'appelle pas cette phase « sécurisée ». Prépare plutôt un lanceur utilisable localement/hors ligne ou une restriction au niveau du routeur avant de poursuivre.
 
+**Langues :** [English (default)](INSTALL.md) · Français
+
 ## 1 — Préparation hors ligne
 
 - [ ] Bloquer le WAN de la console **avant** de l'allumer / de modifier la configuration.
@@ -46,8 +48,8 @@ Une isolation **LAN sans WAN** permet de continuer à utiliser un ordinateur et 
    bind6=::1
 
    [upstream]
-   server=1.1.1.1
    server=9.9.9.9
+   server=149.112.112.112
    timeout_ms=1500
 
    [overrides]
@@ -59,7 +61,7 @@ Une isolation **LAN sans WAN** permet de continuer à utiliser un ordinateur et 
 
 5. Conserver les **124 règles / 0 exception** ; nanoDNS v0.4 limite la configuration à **128 règles**.
 
-Les DNS publics `1.1.1.1` et `9.9.9.9` sont **uniquement les upstreams de nanoDNS** pour les domaines non bloqués. **Ils ne doivent pas être indiqués dans les deux champs DNS de la PS5.**
+Les deux résolveurs Quad9 `9.9.9.9` et `149.112.112.112` sont **uniquement les DNS amont de nanoDNS** pour les domaines non bloqués. Ils appartiennent au **même fournisseur**, sans relais Cloudflare, et ne chiffrent pas les échanges UDP DNS. **Ils ne doivent pas être indiqués dans les deux champs DNS de la PS5.**
 
 **Contrôle B :** bon chemin, bon fichier, sauvegarde conservée ; WAN toujours bloqué.
 
@@ -77,8 +79,8 @@ NanoDNS v0.4
 [nanodns] bind IPv4: 127.0.0.1:53
 [nanodns] bind IPv6: [::1]:53
 [nanodns] config loaded: 2 upstream(s), 124 rule(s), 0 exception(s), timeout=1500ms
-[nanodns] upstream[0] = 1.1.1.1
-[nanodns] upstream[1] = 9.9.9.9
+[nanodns] upstream[0] = 9.9.9.9
+[nanodns] upstream[1] = 149.112.112.112
 [nanodns] listening on 127.0.0.1:53
 [nanodns] listening on [::1]:53
 ```
@@ -145,7 +147,7 @@ Ne surtout **pas** déclencher volontairement une vérification de mise à jour 
 1. Vérifier encore une fois que nanoDNS **tourne**, que la dernière session affiche **124 règles / 0 exception** et que les **deux DNS console** sont `127.0.0.1`.
 2. Retirer la restriction WAN **uniquement en acceptant que des domaines non listés, des adresses IP directes et des résolveurs alternatifs puissent communiquer**. Si « aucune fuite, même par IP » est obligatoire, **laisser le pare-feu/WAN fermé**.
 3. Tester un accès **autorisé** : une fonctionnalité homebrew qui utilise `github.com` ou des métadonnées publiques non bloquées.
-4. Chercher dans les logs la requête correspondante et une réponse **upstream via `1.1.1.1` ou `9.9.9.9`**. Une application qui fonctionne avec son cache ne valide pas à elle seule la résolution.
+4. Chercher dans les logs la requête correspondante et une réponse **upstream via `9.9.9.9` ou `149.112.112.112`**. Une application qui fonctionne avec son cache ne valide pas à elle seule la résolution.
 5. Continuer à surveiller les requêtes bloquées et les domaines inattendus. Ne jamais utiliser un test de mise à jour système comme preuve.
 
 **Contrôle F :** domaines ciblés bloqués, domaine autorisé effectivement résolu, risques résiduels compris.

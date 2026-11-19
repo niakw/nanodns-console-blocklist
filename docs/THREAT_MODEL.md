@@ -7,7 +7,8 @@ This file is a **selective DNS denylist** for the independent nanoDNS payload.
 - Intercept **DNS lookups handled by a running nanoDNS instance**.
 - Return `0.0.0.0` for matching A requests; for matching AAAA requests nanoDNS v0.4 returns a successful response with **no IPv6 answer**.
 - Reduce selected accidental DNS-based contact to PlayStation, Nintendo, Xbox and game-publisher names.
-- Resolve unlisted domains through the configured upstream resolvers, enabling **selective** Internet access.
+- Resolve unlisted domains through **Quad9's security-filtering service** (`9.9.9.9`, `149.112.112.112`), enabling **selective** Internet access.
+- Both upstream IPs belong to **one provider**. Plain DNS forwarding to these addresses uses UDP, not DNS-over-TLS/HTTPS; Quad9's DNSSEC validation does not constitute end-to-end DNS authentication at nanoDNS.
 
 ## Explicitly out of scope
 

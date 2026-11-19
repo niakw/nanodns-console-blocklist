@@ -6,6 +6,10 @@ This work assembles a **new nanoDNS configuration** informed by public community
 
 - **[Drakmor / nanoDNS](https://github.com/drakmor/nanoDNS)** — upstream payload, INI syntax, UDP DNS behavior, wildcard matching, `MAX_RULES=128`, local IPv4/IPv6 listeners. **Independent project**; this repository is not maintained or endorsed by Drakmor.
 
+## DNS upstream provider
+
+- **[Quad9 recommended secure resolvers](https://quad9.net/service/service-addresses-and-features/)** — source for the `9.9.9.9` and `149.112.112.112` pair, malware blocking and DNSSEC validation. Both are addresses of the same operator, not independent upstream providers. The plain nanoDNS UDP transport is not encrypted.
+
 ## PlayStation and cross-console research
 
 - **[Al-Azif / dns-config-watchdog](https://github.com/Al-Azif/dns-config-watchdog)** — historical PlayStation and Nintendo DNS zone data.

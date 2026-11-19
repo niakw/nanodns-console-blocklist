@@ -11,6 +11,10 @@
 | EA / Ubisoft / Sega / CD Projekt / GOG | Selected families and brand subdomains | Static matching only |
 | Valve / Capcom / Square Enix / Bandai Namco | Selected brand families | Static matching only |
 
+## Current resolver policy versus historic console proof
+
+The repository now configures only Quad9's secure IPv4 resolver pair (`9.9.9.9`, `149.112.112.112`) for authorized names. The observations below were captured **before** this change; they do not prove current resolver fallback or the new configuration has been tested on console.
+
 ## What the PS5 log showed (10 October 2026)
 
 A user-provided nanoDNS v0.4 startup/operation log showed:

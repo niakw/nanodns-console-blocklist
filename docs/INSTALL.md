@@ -19,6 +19,8 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
 
 **Do not rely on a public community DNS** during initial setup. If your exploit/loader cannot start offline or via a trusted local route, there may be an unavoidable unfiltered interval when using that method; **stop and reassess rather than treating that interval as safe**. This repository does not supply an offline loader or exploit.
 
+**Language:** English (default) · [Français](INSTALL.fr.md)
+
 ## 1 — Offline preflight (WAN still denied)
 
 - [ ] Confirm you can start your homebrew loader **without depending on PSN or an unfiltered public DNS**. Record the path before restarting.
@@ -43,8 +45,8 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
    bind6=::1
 
    [upstream]
-   server=1.1.1.1
    server=9.9.9.9
+   server=149.112.112.112
    timeout_ms=1500
 
    [overrides]
@@ -56,7 +58,7 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
 
 5. Leave the **124-rule** baseline and zero exceptions as provided. nanoDNS v0.4 supports **at most 128 rules**, so adding a large hosts file directly will not work. This configuration **does not block all Internet**.
 
-The two public DNS servers above belong **inside nanoDNS only**. They resolve **unmatched** names; they must **not** be added as a public DNS bypass in the console's network settings.
+The two upstream addresses are **Quad9's security-filtering service** (primary and backup at the same provider); they do not add provider diversity. They belong **inside nanoDNS only**. They resolve **unmatched** names; they must **not** be added as a public DNS bypass in the console's network settings.
 
 **Checkpoint B:** path, format, bind, rule count, exceptions and backup checked; console WAN still denied.
 
@@ -74,8 +76,8 @@ NanoDNS v0.4
 [nanodns] bind IPv4: 127.0.0.1:53
 [nanodns] bind IPv6: [::1]:53
 [nanodns] config loaded: 2 upstream(s), 124 rule(s), 0 exception(s), timeout=1500ms
-[nanodns] upstream[0] = 1.1.1.1
-[nanodns] upstream[1] = 9.9.9.9
+[nanodns] upstream[0] = 9.9.9.9
+[nanodns] upstream[1] = 149.112.112.112
 [nanodns] listening on 127.0.0.1:53
 [nanodns] listening on [::1]:53
 ```
@@ -141,7 +143,7 @@ Only if you **accept the limitations** in [THREAT_MODEL.md](THREAT_MODEL.md) and
 1. Keep nanoDNS **running**, verify console DNS remains `127.0.0.1` in **both fields**, and inspect the current session log once more.
 2. **Remove the temporary router/WAN restriction** only when you accept that **unlisted hosts, direct IP addresses, encrypted/alternate DNS and pre-existing connections can reach the Internet**. Retain the restriction if avoiding *any* possible publisher contact is mandatory.
 3. Launch a **known permitted** homebrew function that legitimately requests an unlisted name (for example, public project metadata on `github.com`). Confirm the function actually succeeds.
-4. Check the current nanoDNS log for a matching DNS query and an upstream response from **`1.1.1.1` or `9.9.9.9`**. Upstream log wording varies. **No upstream query observed means this test is inconclusive**, even if an application loaded cached content.
+4. Check the current nanoDNS log for a matching DNS query and an upstream response from **`9.9.9.9` or `149.112.112.112`**. Upstream log wording varies. **No upstream query observed means this test is inconclusive**, even if an application loaded cached content.
 5. Continue to observe the console log for blocked names and unexpected traffic; report missing endpoints with **redacted** evidence.
 
 If the access you need fails, **do not 'fix' it by setting automatic DNS or a public secondary server**. Restore WAN isolation before diagnosis.

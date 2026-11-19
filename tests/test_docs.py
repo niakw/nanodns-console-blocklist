@@ -14,6 +14,18 @@ class SafeInstallDocumentation(unittest.TestCase):
         self.assertIn("(docs/INSTALL.fr.md)", readme)
         self.assertIn("(docs/SETUP_SAFETY.md)", readme)
 
+    def test_quad9_only_upstreams_and_bilingual_examples(self):
+        ini = (ROOT / "nanodns.ini").read_text(encoding="utf-8")
+        en = (ROOT / "docs/INSTALL.md").read_text(encoding="utf-8")
+        fr = (ROOT / "docs/INSTALL.fr.md").read_text(encoding="utf-8")
+        for document in (ini, en, fr):
+            self.assertIn("server=9.9.9.9", document)
+            self.assertIn("server=149.112.112.112", document)
+            self.assertNotIn("server=1.1.1.1", document)
+            self.assertNotIn("server=8.8.8.8", document)
+        self.assertIn("README.fr.md", (ROOT / "README.md").read_text(encoding="utf-8"))
+        self.assertTrue((ROOT / "README.fr.md").is_file())
+
     def test_en_complete_safe_order(self):
         s = (ROOT / "docs/INSTALL.md").read_text(encoding="utf-8")
         gates = (

@@ -15,7 +15,9 @@
 
 **PlayStation · Nintendo · Xbox · Game Publishers · Emulator-aware DNS filtering**
 
-[**Get the configuration**](nanodns.ini) · [**Install guide**](docs/INSTALL.md) · [**Coverage**](docs/COVERAGE.md) · [**Security model**](docs/THREAT_MODEL.md)
+**Language:** English (default) · [Français](README.fr.md)
+
+[**Get the configuration**](nanodns.ini) · [**Quad9 service reference**](https://quad9.net/service/service-addresses-and-features/) · [**Install guide**](docs/INSTALL.md) · [**Coverage**](docs/COVERAGE.md) · [**Security model**](docs/THREAT_MODEL.md)
 
 </div>
 
@@ -49,7 +51,7 @@ This is **not** the crude “disconnect everything” approach. It is selective 
 - **Nintendo across generations:** branded Wii, DS/3DS, Wii U, Switch and Switch 2 service hostnames, plus legacy Wii endpoints.
 - **Xbox across generations:** Xbox Live, Xbox Network, Game Pass, legacy Xbox 360-style families and selected Microsoft/CDN aliases.
 - **Publisher-aware:** Epic, Rockstar/Take-Two/2K, EA, Ubisoft, Sega, CD Projekt/GOG, Steam/Valve, Capcom, Square Enix and Bandai Namco.
-- **Predictable configuration:** **124 explicit override rules, zero exceptions**, and two upstreams for *unlisted* domains.
+- **Predictable configuration:** **124 explicit override rules, zero exceptions**. Only Quad9's **security-filtering** IPv4 resolvers (`9.9.9.9`, `149.112.112.112`) are configured as upstreams for unlisted names.
 - **Auditable and open:** plain-text policy, public sources, automated static validation, and community contributions.
 
 > **Compatibility note:** Covering names associated with a platform does **not** prove that all of its online services, games or emulators are isolated. This project is designed to reduce selected DNS exposure; it does not modify emulator network stacks or game code.
@@ -70,6 +72,8 @@ This is **not** the crude “disconnect everything” approach. It is selective 
 | **5 · Verify** | Read **new console-side logs** and look for `query from`, `override matched`, A→`0.0.0.0`, AAAA→0 answers. | Actual blocked DNS queries, not just a process startup message. |
 | **6 · Selective WAN** | **Only if the residual risks are acceptable:** allow Internet and test an unlisted permitted name (e.g. GitHub). | Upstream answer logged; blocked domains still match. |
 | **7 · Every reboot** | Relaunch nanoDNS and recheck listeners, DNS settings and current-session logs. | Don't trust a previous boot's result. |
+
+**The two Quad9 upstreams in the INI are not PS5 DNS settings.** They use the same provider, not two independent DNS operators. This configuration uses plain UDP DNS for forwarding; it does not encrypt DNS traffic or provide an Internet-wide firewall.
 
 **The two public upstreams in the INI are not PS5 DNS settings.** The console DNS fields stay at `127.0.0.1` / `127.0.0.1`. If the payload is absent, standard loopback name resolution usually fails, but **direct-IP / alternative-DNS traffic may still pass**. For a zero-WAN requirement, retain external WAN blocking.
 
