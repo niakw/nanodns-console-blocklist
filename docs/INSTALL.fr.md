@@ -1,6 +1,6 @@
 # Installation sécurisée — target consoles (nanoDNS v0.4)
 
-**Objectif :** installer les **124 règles sélectives** sans exposer inutilement la console aux serveurs platform operator, other console ecosystem, other console ecosystem ou aux éditeurs pendant la configuration. Ce guide réduit les risques de fuite DNS, mais **un DNS n'est pas un pare-feu**. Voir [les limites de sécurité](THREAT_MODEL.md).
+**Objectif :** installer les **124 règles sélectives** sans exposer inutilement la console aux services de la plateforme, other console ecosystem, other console ecosystem ou aux éditeurs pendant la configuration. Ce guide réduit les risques de fuite DNS, mais **un DNS n'est pas un pare-feu**. Voir [les limites de sécurité](THREAT_MODEL.md).
 
 > [!CAUTION]
 > **Avoir un fichier `nanodns.ini` sur le disque ne suffit pas.** Le payload doit fonctionner, les deux DNS de la console doivent pointer vers `127.0.0.1`, puis les journaux doivent montrer de véritables requêtes interceptées.

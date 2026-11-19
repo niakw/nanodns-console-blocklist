@@ -1,5 +1,7 @@
 # Security policy
 
+**Language:** English (default) · [Français](SECURITY.fr.md)
+
 ## Support
 
 This is a community-maintained **DNS configuration**, not a security appliance. There is **no guarantee** that firmware updates, account communication, telemetry, game updates, direct IP traffic or third-party endpoints are fully blocked.

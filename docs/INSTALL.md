@@ -3,7 +3,7 @@
 **Goal:** install the selective 124-rule profile while **minimizing unfiltered network exposure**. This is an operational checklist, not a claim that DNS filtering stops every network connection. Read the [threat model](THREAT_MODEL.md) before connecting an Internet-facing console.
 
 > [!CAUTION]
-> **Never assume the target consoles is protected just because the `nanodns.ini` file exists. nanoDNS must be running, console DNS must point to it, and the relevant DNS queries must be observed matching an override.**
+> **Never assume the console is protected just because the `nanodns.ini` file exists. nanoDNS must be running, console DNS must point to it, and the relevant DNS queries must be observed matching an override.**
 >
 > For the **first boot, firmware-sensitive consoles should remain isolated from the public Internet** until the sequence below has been checked. The only way to exclude *all* pre-payload/direct-IP traffic is a separately enforced network restriction (router/firewall/WAN isolation). This blocklist alone cannot promise zero leaks.
 
@@ -11,7 +11,7 @@
 
 | Your priority | Recommended network posture |
 | --- | --- |
-| **No outbound Internet before payload/filter validation** | Keep target consoles on an isolated LAN with **WAN denied externally** while you prepare, load nanoDNS and validate it. |
+| **No outbound Internet before payload/filter validation** | Keep the console on an isolated LAN with **WAN denied externally** while you prepare, load nanoDNS and validate it. |
 | **Internet for selected homebrew/emulator services after validation** | Use this selective policy and re-enable WAN **only after** the checks below; understand the remaining DNS bypass and direct-IP risks. |
 | **Absolutely no external connection to console/publisher infrastructure** | DNS-only cannot certify that property. Keep an independent firewall / WAN restriction in place; prefer local-only tools. |
 
@@ -109,7 +109,7 @@ Save the settings. If the console reports a failed platform services Network / I
 
 ## 5 — Confirm actual DNS interception, not just startup
 
-Keep the WAN gate closed. Examine `/data/nanodns/nanodns.log` **after** changing the target consoles network settings. If the console makes a normal background request for a blocked platform operator name, you should see entries resembling:
+Keep the WAN gate closed. Examine `/data/nanodns/nanodns.log` **after** changing the console network settings. If the console makes a normal background request for a blocked platform operator name, you should see entries resembling:
 
 ```text
 [nanodns] query from=127.0.0.1:... qname=console.np.platform services.net qtype=A(1) ...
