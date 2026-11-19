@@ -4,7 +4,7 @@ import re
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
-BRANDS=re.compile(r"\b(?:sony|nintendo|playstation|xbox|microsoft|epic|rockstar|ubisoft|sega|cloudflare|google|capcom|bandai|namco|steam|valve|gog|psn|ps4|ps5|ps3|akamai|electronic arts|take.two|square enix|cd projekt)\b",re.I)
+BRANDS=re.compile(r"\b(?:sony|nintendo|playstation|xbox|microsoft|epic|rockstar|ubisoft|sega|cloudflare|google|capcom|bandai|namco|steam|valve|gog|psn|ps4|ps5|ps3|akamai|electronic arts|take.two|square enix|cd projekt|dualsense|sie|wii|switch)\b",re.I)
 PAIRS=(
  ("README.md","README.fr.md"),
  ("docs/INSTALL.md","docs/INSTALL.fr.md"),
