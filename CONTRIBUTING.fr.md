@@ -15,7 +15,7 @@ Fournir le nom exact ou le motif le plus restreint possible, la source, la raiso
 - Conserver un format INI réellement compatible avec nanoDNS.
 - Conserver **zéro exception active par défaut**, sauf examen explicite.
 - Respecter la limite actuelle de **128 règles** du moteur.
-- Garder les deux DNS sécurisés Quad9, sauf changement documenté.
+- Garder les quatre DNS Control D et AdGuard sans filtrage, dans cet ordre, sauf changement documenté.
 
 ## Tests
 

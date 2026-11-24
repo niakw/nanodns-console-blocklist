@@ -8,7 +8,7 @@ nanoDNS Console Blocklist is a **selective policy for a local UDP DNS proxy**. I
 
 - Detect matches against **124 configured hostname patterns**.
 - Answer blocked A queries locally with `0.0.0.0` and blocked AAAA requests without IPv6 addresses, using the installed nanoDNS behavior.
-- Ship **zero default bypass exceptions** and direct permitted names to the Quad9 secure upstream pair.
+- Ship **zero default bypass exceptions** and direct permitted names to the four ordered non-filtering Control D/AdGuard upstream addresses.
 - Provide reproducible static tests and evidence-based maintenance.
 
 ## Out of scope
@@ -27,7 +27,7 @@ If nanoDNS is absent, ordinary loopback DNS may fail, but **direct-IP access and
 
 ## Resolver and false positives
 
-The two upstreams `9.9.9.9` and `149.112.112.112` are **both Quad9 secure**; they are not independent operators. Quad9 provides threat blocking and DNSSEC validation, while the original payload communicates over plaintext UDP.
+The four upstreams are Control D `76.76.2.0`, `76.76.10.0`, followed by AdGuard DNS `94.140.14.140`, `94.140.14.141`. Both profiles are unfiltered; unlike the prior Quad9 profile they provide no additional malware/ad filtering. The payload uses plaintext UDP.
 
 The list includes deliberately **broad vendor-name patterns** and at least one **exact name on shared CDN infrastructure**. A matching DNS hostname can be legitimate; investigate false positives with redacted logs and the narrowest supported change.
 

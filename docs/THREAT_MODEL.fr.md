@@ -9,7 +9,7 @@ nanoDNS Console Blocklist est une **politique DNS sélective** pour un résolveu
 - **124 motifs de noms de domaine** connus sont bloqués par le payload lorsqu'il reçoit les requêtes.
 - Pour un nom bloqué, A retourne `0.0.0.0`, AAAA ne renvoie pas d'adresse, selon le comportement du moteur installé.
 - Le fichier livré ne contient **aucune exception active**.
-- Les noms autorisés sont transmis au service sécurisé **Quad9**.
+- Les noms autorisés sont transmis aux services sans filtrage **Control D puis AdGuard DNS**.
 
 ## Ce qui n'est pas couvert
 
@@ -21,9 +21,9 @@ En cas d'exigence stricte, **bloquer le WAN depuis le routeur/pare-feu**, en IPv
 
 Sans nanoDNS, une résolution classique vers le loopback peut échouer, mais des connexions IP directes ou un autre DNS peuvent toujours fonctionner. Seule une restriction externe couvre la période précédant le payload.
 
-## Quad9 et faux positifs
+## DNS amont et faux positifs
 
-`9.9.9.9` et `149.112.112.112` sont deux adresses du **même service Quad9 sécurisé**. La validation DNSSEC par Quad9 n'implique pas que le transfert UDP du payload soit chiffré.
+Les quatre adresses sont Control D `76.76.2.0`, `76.76.10.0`, puis AdGuard DNS `94.140.14.140`, `94.140.14.141`. Ces profils sans filtrage n'ajoutent pas de protection antimalware/publicitaire. Le transfert UDP du payload reste non chiffré.
 
 Les motifs larges et un alias exact d'un CDN partagé peuvent toucher des noms légitimes. Documenter les faux positifs et éviter les exceptions générales.
 

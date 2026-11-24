@@ -2,7 +2,7 @@
 
 **Langues :** [English (default)](SETUP_SAFETY.md) | Français
 
-La politique est **sélective** : les noms non répertoriés restent résolus par les DNS amont Quad9 lorsqu'un nanoDNS actif reçoit la requête.
+La politique est **sélective** : les noms non répertoriés restent résolus par les DNS amont Control D puis AdGuard DNS, sans filtrage supplémentaire lorsqu'un nanoDNS actif reçoit la requête.
 
 ## Risque au premier démarrage
 
@@ -17,7 +17,7 @@ Après un redémarrage complet, un crash ou une reprise, revérifier que le proc
 - `124 rule(s), 0 exception(s)` : le profil prévu a été chargé.
 - `listening on 127.0.0.1:53` : un écouteur local existe à cet instant.
 - `override matched` : la requête DNS observée a été interceptée.
-- Une réponse amont Quad9 pour un domaine autorisé indique que cette résolution a fonctionné.
+- Une réponse amont Control D ou AdGuard pour un domaine autorisé indique que cette résolution a fonctionné.
 
 Aucun de ces signaux ne garantit que toutes les connexions IP, tous les domaines ou les mises à jour sont bloqués.
 

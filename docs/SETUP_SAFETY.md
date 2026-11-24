@@ -2,7 +2,7 @@
 
 **Language:** English (default) · [Français](SETUP_SAFETY.fr.md)
 
-**Policy mode: SELECTIVE, Quad9-only upstreams.** The `nanodns.ini` uses `9.9.9.9` then `149.112.112.112`, both security-filtering Quad9 addresses for permitted domains. No an alternate resolver provider or other-provider fallback. Ordinary upstream DNS uses unencrypted UDP. This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
+**Policy mode: SELECTIVE, ordered unfiltered upstreams.** The `nanodns.ini` uses Control D `76.76.2.0`, `76.76.10.0`, then AdGuard DNS `94.140.14.140`, `94.140.14.141`. These are two independent providers without additional malware/ad filtering, using ordinary unencrypted UDP. This repository deliberately does not contain `*=0.0.0.0`; unrelated Internet hostnames are forwarded upstream when nanoDNS is running.
 
 ## Boot leak window
 
@@ -16,7 +16,7 @@ A **running DNS proxy is a prerequisite**, not a property of a saved file. Befor
 
 ## What a successful check proves
 
-- `config loaded: 2 upstream(s), 124 rule(s), 0 exception(s)` proves the active nanoDNS process loaded this policy.
+- `config loaded: 4 upstream(s), 124 rule(s), 0 exception(s)` proves the active nanoDNS process loaded this policy.
 - `listening on 127.0.0.1:53` proves a local DNS listener exists (at that instant).
 - `query from=127.0.0.1` after the console DNS change shows an actual DNS query reached nanoDNS.
 - `override matched` plus `data=0.0.0.0` for A (or no answers for AAAA) demonstrates the **specific lookup was blocked**.

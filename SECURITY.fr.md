@@ -8,6 +8,6 @@ Pour une interdiction stricte de toute sortie Internet, configurer un pare-feu o
 
 Signaler les défauts avec le firmware, la version du payload, le profil utilisé, un nom de domaine reproductible, le résultat observé et les journaux anonymisés. Éviter toute publication de données personnelles, de jetons ou d'adresses privées.
 
-Le projet utilise [nanoDNS de Drakmor](https://github.com/drakmor/nanoDNS) et [Quad9](https://docs.quad9.net/fr/services/) comme résolveur configuré ; il est indépendant de l'auteur du payload et de tout fabricant de console.
+Le projet utilise [nanoDNS de Drakmor](https://github.com/drakmor/nanoDNS) et [Control D](https://docs.controld.com/docs/free-dns) et [AdGuard DNS](https://adguard-dns.io/fr/public-dns.html) comme résolveurs amont sans filtrage ; il est indépendant de l'auteur du payload et de tout fabricant de console.
 
 Consulter [le modèle de risque](docs/THREAT_MODEL.fr.md), [la couverture](docs/COVERAGE.fr.md) et [l'installation](docs/INSTALL.fr.md).

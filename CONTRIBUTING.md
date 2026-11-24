@@ -15,7 +15,7 @@ Provide the exact hostname or the narrowest possible wildcard, the source where 
 - Keep the source INI valid for nanoDNS (not hosts-file or another blocklist syntax).
 - Preserve **zero active default exceptions**. Proposed exceptions require an explicit risk review.
 - Stay within the resolver's **128-rule limit**, or coordinate an implementation change with the runtime project.
-- Preserve both Quad9 secure upstream addresses unless there is a documented migration.
+- Preserve the four ordered Control D and AdGuard non-filtering upstream addresses unless there is a documented migration.
 
 ## Validation
 

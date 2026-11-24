@@ -24,13 +24,13 @@ A console log from the original nanoDNS v0.4, using the **124-rule / 0-exception
 - For blocked A queries, the resolver replied with `0.0.0.0`. For matching AAAA queries, it returned no IPv6 answer.
 - Repeated background queries were visible in that test session.
 
-These observations do **not** demonstrate coverage of all possible endpoints, absence of direct-IP traffic, or successful blocking before payload startup. The **2026-11-19 Quad9 resolver change** was not part of the older console run and is not claimed to be hardware-validated by it.
+These observations do **not** demonstrate coverage of all possible endpoints, absence of direct-IP traffic, or successful blocking before payload startup. The Quad9 migration on 19 November 2026 and its replacement by Control D/AdGuard on 24 November 2026 were not part of the older console run.
 
 ## What is new relative to the original defaults?
 
 - **8 → 124** shipped override patterns.
 - **6 → 0** default bypass exceptions.
-- **Three mixed upstreams → a single Quad9 security-filtering service** with primary `9.9.9.9` and secondary `149.112.112.112`.
+- **Three mixed upstreams → Quad9 (historical) → four ordered non-filtering upstreams across two providers:** Control D `76.76.2.0`, `76.76.10.0`, then AdGuard DNS `94.140.14.140`, `94.140.14.141`.
 - Automated checks for policy count, duplicates, negative controls, DNS configuration, safe installation and documentation references.
 
 The optional [runtime fork](https://github.com/niakw/nanoDNS-13.60) adds mandatory compiled rules and packet/lifecycle checks; those properties **are not delivered by the INI file itself**. See [comparison](COMPARISON.md).
