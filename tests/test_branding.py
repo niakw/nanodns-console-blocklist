@@ -33,7 +33,7 @@ class PresentationContract(unittest.TestCase):
   self.assertIn("(docs/INSTALL.fr.md)",en)
   self.assertLess(en.index("(docs/INSTALL.md)"),en.index("(docs/INSTALL.fr.md)"))
   for s in (en,(ROOT/"README.fr.md").read_text(encoding="utf-8")):
-   for term in ("124","Quad9","Drakmor"):
+   for term in ("124","Control D","Drakmor"):
     self.assertIn(term,s)
 
  def test_no_visible_vendor_marking(self):
@@ -54,7 +54,7 @@ class PresentationContract(unittest.TestCase):
    self.assertIsNone(match, f"{rel}: {match.group(0) if match else ''}")
 
  def test_firmware_specific_runtime_recommendation(self):
-  expected="https://github.com/niakw/nanoDNS-13.60"
+  expected="https://github.com/niakw/nanoDNS-Encore"
   for path in ("README.md","README.fr.md","docs/COMPARISON.md","docs/COMPARISON.fr.md"):
    s=(ROOT/path).read_text(encoding="utf-8")
    with self.subTest(file=path):

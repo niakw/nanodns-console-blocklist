@@ -71,8 +71,8 @@ class ConfigTests(unittest.TestCase):
         self.assertIn("bind6=::1", self.parts["general"])
         self.assertEqual(
             [entry for entry in self.parts["upstream"] if entry.startswith("server=")],
-            ["server=9.9.9.9", "server=149.112.112.112"],
-            "Only secure Quad9 primary and backup are supported in the published policy",
+            ["server=76.76.2.0", "server=76.76.10.0", "server=94.140.14.140", "server=94.140.14.141"],
+            "Published policy must preserve the four ordered Control D / AdGuard upstreams",
         )
 
     def test_sony_representatives(self):

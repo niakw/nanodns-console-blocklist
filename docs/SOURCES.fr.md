@@ -10,7 +10,7 @@ Le dépôt fournit **une configuration originale et vérifiable**, sans redistri
 
 ## Résolution DNS sécurisée
 
-[Quad9 — adresses officielles](https://docs.quad9.net/fr/services/) — `9.9.9.9` et `149.112.112.112` correspondent au même service avec filtrage des menaces et validation DNSSEC. Le payload utilise toujours de l'UDP non chiffré vers ces résolveurs.
+[Control D](https://docs.controld.com/docs/free-dns) et [AdGuard DNS](https://adguard-dns.io/fr/public-dns.html) — adresses sans filtrage dans l'ordre : `76.76.2.0`, `76.76.10.0`, `94.140.14.140`, `94.140.14.141`. [Retrait de Quad9 en France](https://quad9.net/fr/news/blog/au-revoir-france/) le 24 novembre 2026 ; transport UDP non chiffré.
 
 ## Recherches communautaires complémentaires
 
@@ -26,6 +26,6 @@ Chaque projet reste indépendant et conserve ses droits. La citation ne vaut ni 
 
 ## Historique de la politique
 
-Liste de **124 règles, sans exception active**, initialement datée du **10 octobre 2026**. Les résolveurs Quad9 ont été configurés le **19 novembre 2026**. Pour proposer un changement, fournir le nom exact, la source, le comportement attendu et le risque de faux positif.
+Liste de **124 règles, sans exception active**, initialement datée du **10 octobre 2026**. Quad9 a été utilisé à partir du 19 novembre 2026 puis remplacé le **24 novembre 2026** par Control D et AdGuard. Pour proposer un changement, fournir le nom exact, la source, le comportement attendu et le risque de faux positif.
 
 Consulter la [couverture](COVERAGE.fr.md), le [modèle de risque](THREAT_MODEL.fr.md) et l'[installation](INSTALL.fr.md).

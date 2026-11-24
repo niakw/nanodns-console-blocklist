@@ -4,16 +4,16 @@
 
 ### Take control of console DNS — without cutting off the rest of the Internet.
 
-**124 selective rules · 0 default exceptions · Quad9 Secure DNS**
+**124 selective rules · 0 default exceptions · Control D + AdGuard DNS**
 
 [![DNS rules](https://img.shields.io/badge/Protected_patterns-124-394965)](nanodns.ini)
 [![Default exceptions](https://img.shields.io/badge/Default_exceptions-0-28715e)](nanodns.ini)
-[![Quad9](https://img.shields.io/badge/Resolver-Quad9-456b90)](https://docs.quad9.net/services/)
+[![Resolvers](https://img.shields.io/badge/DNS-Control_D%20%2B%20AdGuard-456b90)](https://docs.controld.com/docs/free-dns)
 [![License](https://img.shields.io/badge/License-GPL--3.0-555)](LICENSE)
 
 **English (default)** · [Français](README.fr.md)
 
-[**Get the blocklist**](nanodns.ini) · [**Our nanoDNS for PS5 13.60**](https://github.com/niakw/nanoDNS-13.60) · [**Install in English**](docs/INSTALL.md) · [**Compare protections**](docs/COMPARISON.md) · [**Security model**](docs/THREAT_MODEL.md)
+[**Get the blocklist**](nanodns.ini) · [**Our nanoDNS for PS5 13.60**](https://github.com/niakw/nanoDNS-Encore) · [**Install in English**](docs/INSTALL.md) · [**Compare protections**](docs/COMPARISON.md) · [**Security model**](docs/THREAT_MODEL.md)
 
 </div>
 
@@ -23,7 +23,7 @@
 
 Consoles running homebrew, emulators and media tools may resolve platform-service, telemetry and publisher domains in the background. Blocking *everything* makes daily use harder. Leaving every hostname unrestricted provides little control.
 
-**nanoDNS Console Blocklist delivers a stronger, selective default policy for [nanoDNS by Drakmor](https://github.com/drakmor/nanoDNS).** It replaces the small original default ruleset with **124 reviewed DNS patterns**, removes the **six default bypass exceptions**, and routes unrelated DNS lookups through the **Quad9 secure resolver pair**.
+**nanoDNS Console Blocklist delivers a stronger, selective default policy for [nanoDNS by Drakmor](https://github.com/drakmor/nanoDNS).** It replaces the small original default ruleset with **124 reviewed DNS patterns**, removes the **six default bypass exceptions**, and routes unrelated DNS lookups through the **Control D unfiltered resolvers, with AdGuard non-filtering fallback**.
 
 The result is transparent, editable, auditable and practical: **block known unwanted hostnames while retaining DNS for permitted services.**
 
@@ -31,11 +31,11 @@ The result is transparent, editable, auditable and practical: **block known unwa
 
 This repository supplies the **124-rule `nanodns.ini` blocklist**, which you can use with [Drakmor's original nanoDNS](https://github.com/drakmor/nanoDNS).
 
-For a **complete alternative payload**, we also maintain **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-13.60)**, an independent hardened runtime based on Drakmor's work, specifically prepared for **PS5 firmware 13.60**. Unlike an INI-only replacement, it embeds the protected rules in the binary, enforces them before user exceptions, and includes security and process-lifecycle improvements.
+For a **complete alternative payload**, we also maintain **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-Encore)**, an independent hardened runtime based on Drakmor's work, specifically prepared for **PS5 firmware 13.60**. Unlike an INI-only replacement, it embeds the protected rules in the binary, enforces them before user exceptions, and includes security and process-lifecycle improvements.
 
-**PS5 firmware 13.60 — real-user tested:** release **0.4-13.60.2** successfully started, loaded 124 rules with 0 exceptions, blocked all **5 observed A DNS queries**, and completed a normal shutdown/power-on trial without recurrence of the previously reported problem (power-cycle result user-reported). **Other PS5 firmwares and PS4 have not been user-validated.** Rest/resume, permitted upstream lookups, AAAA and long-duration stability still require tests. Neither version replaces a firewall.
+**PS5 firmware 13.60 — real-user tested:** release **0.4-13.60.2** successfully started, loaded 124 rules with 0 exceptions, blocked all **5 observed A DNS queries**, and completed a normal shutdown/power-on trial without recurrence of the previously reported problem (power-cycle result user-reported). **Other PS5 firmwares and PS4 have not been user-validated.** Rest/resume, permitted upstream lookups, AAAA and long-duration stability still require tests. Neither version replaces a firewall. The new resolver profile is not part of the historical hardware test.
 
-**[Explore our nanoDNS 13.60 repository](https://github.com/niakw/nanoDNS-13.60)** · [Latest Release](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Download ready-to-copy ELF + INI ZIP](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip)
+**[Explore our nanoDNS 13.60 repository](https://github.com/niakw/nanoDNS-Encore)** · [Latest Release](https://github.com/niakw/nanoDNS-Encore/releases/latest) · [ELF + INI ZIP on latest release](https://github.com/niakw/nanoDNS-Encore/releases/latest)
 
 ## How much stronger than the original?
 
@@ -43,14 +43,14 @@ For a **complete alternative payload**, we also maintain **[nanoDNS 13.60](https
 | --- | --- | --- | --- |
 | Built-in/default deny patterns | **8** | **124** in the installable INI | **124 mandatory** masks compiled into the binary |
 | Default bypass exceptions | **6** | **0** | Protected masks take priority over user exceptions |
-| DNS upstreams | 3 mixed resolvers | **Quad9 Secure only** | Same Quad9 pair by default |
+| DNS upstreams | 3 mixed resolvers | **Control D + AdGuard, unfiltered** | Same ordered four addresses by default |
 | Hostname coverage | Limited initial platform rules | Multiple generations, publisher endpoints and known aliases | Same policy with additional answer checks |
 | Standard DNS on permitted sites | Available | **Preserved** | Preserved |
 | Resolver code hardening | Original behavior | Not applicable — configuration only | Extra checks for replies, duplicate instances and shutdown |
 | Guaranteed prevention of all outbound traffic | **No** | **No** | **No** |
 | Firmware 13.60 shutdown/power-on user test | Not established | Not applicable — INI only | **Passed on PS5 13.60 with runtime 0.4-13.60.2**; rest/resume unverified |
 
-**Important distinction:** the original nanoDNS can load a custom INI. Its eight rules and six exceptions are its **factory defaults**, not a limit. This repository ships a stronger **configuration**. Only our [PS5 13.60 hardened nanoDNS runtime](https://github.com/niakw/nanoDNS-13.60) implements a mandatory embedded baseline and extra runtime security. [See full technical comparison](docs/COMPARISON.md).
+**Important distinction:** the original nanoDNS can load a custom INI. Its eight rules and six exceptions are its **factory defaults**, not a limit. This repository ships a stronger **configuration**. Only our [PS5 13.60 hardened nanoDNS runtime](https://github.com/niakw/nanoDNS-Encore) implements a mandatory embedded baseline and extra runtime security. [See full technical comparison](docs/COMPARISON.md).
 
 ## A clean, selective DNS path
 
@@ -62,12 +62,13 @@ Console DNS (primary + secondary = 127.0.0.1)
                   /           \
       Denied hostname        Unlisted name
               |                    |
-      Local 0.0.0.0 /            Quad9 Secure
-      empty AAAA answer        9.9.9.9
-                               149.112.112.112
+      Local 0.0.0.0 /            Control D
+      empty AAAA answer        76.76.2.0 / 76.76.10.0
+                               AdGuard fallback
+                               94.140.14.140 / 94.140.14.141
 ```
 
-Both upstream addresses belong to the **same Quad9 security-filtering service**. They are a primary and backup, not two providers. Quad9 filters known malicious domains and validates DNSSEC, but nanoDNS currently forwards through **ordinary, unencrypted UDP**. The **console DNS settings must both remain `127.0.0.1`**, never Quad9 directly. [Quad9 official documentation](https://docs.quad9.net/services/).
+The ordered upstream profile uses Control D (unfiltered) first, AdGuard DNS (non-filtering) as fallback: `76.76.2.0`, `76.76.10.0`, `94.140.14.140`, `94.140.14.141`. Quad9 stopped serving French users on 24 November 2026 ([announcement](https://quad9.net/news/blog/au-revoir-france/)). Neither new profile adds malware or ad filtering; the 124 local rules remain unchanged. Upstream transport is **ordinary, unencrypted UDP**. Both console DNS settings remain **`127.0.0.1`**. [Control D](https://docs.controld.com/docs/free-dns) · [AdGuard](https://adguard-dns.io/en/public-dns.html).
 
 ## Why this profile?
 
@@ -76,7 +77,7 @@ Both upstream addresses belong to the **same Quad9 security-filtering service**.
 - **Selective rather than global blocking** — documentation, development tools and unrelated websites can still resolve.
 - **No remote rules dependency** — a plain-text INI that can be inspected, versioned and tested offline.
 - **Security-first deployment** — English installation documentation with a separate complete French guide.
-- **Repeatable checks** — rule counts, duplicate detection, protected/allowed examples and Quad9-only settings verified by CI.
+- **Repeatable checks** — rule counts, duplicate detection, protected/allowed examples and ordered four-address settings verified by CI.
 
 ## Install without a blind spot
 

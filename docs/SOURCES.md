@@ -10,7 +10,7 @@ This repository publishes a newly organized, auditable **configuration**, not a 
 
 ## Protected DNS upstream
 
-- [Quad9 official service addresses](https://docs.quad9.net/services/) — secure DNS endpoint `9.9.9.9` with backup `149.112.112.112`, threat filtering and DNSSEC validation at the resolver.
+- [Control D free DNS](https://docs.controld.com/docs/free-dns) and [AdGuard public DNS](https://adguard-dns.io/en/public-dns.html) — unfiltered upstream addresses in configured order: `76.76.2.0`, `76.76.10.0`, `94.140.14.140`, `94.140.14.141`. [Quad9 withdrawal from France](https://quad9.net/news/blog/au-revoir-france/) prompted the 24 November 2026 migration.
 - Both addresses belong to **one provider**. nanoDNS sends ordinary **unencrypted UDP** to its configured upstreams; the blocklist does not add DNS-over-TLS or DNS-over-HTTPS.
 
 ## Additional public community research
@@ -27,7 +27,7 @@ These references remain independent projects with their own attribution and lice
 
 ## Policy maintenance and audit trail
 
-The shipped [`nanodns.ini`](../nanodns.ini) contains **124 patterns, zero active exceptions**, and the Quad9 secure pair. The original profile was dated **10 October 2026** and the resolver-only update was made **19 November 2026**.
+The shipped [`nanodns.ini`](../nanodns.ini) contains **124 patterns, zero active exceptions**, and four ordered non-filtering DNS addresses across two providers. The original profile was dated **10 October 2026**; Quad9 was used from **19 November 2026** until the **24 November 2026** migration.
 
 Adding or removing a hostname requires its precise name, source, expected effect, reason for inclusion and false-positive analysis. Tests must be updated deliberately; do not silently increase the rule cap or weaken a blocking rule.
 

@@ -45,8 +45,10 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
    bind6=::1
 
    [upstream]
-   server=9.9.9.9
-   server=149.112.112.112
+   server=76.76.2.0
+   server=76.76.10.0
+   server=94.140.14.140
+   server=94.140.14.141
    timeout_ms=1500
 
    [overrides]
@@ -58,7 +60,7 @@ An isolated LAN means LAN communication can still work (e.g. FTP from a Mac), bu
 
 5. Leave the **124-rule** baseline and zero exceptions as provided. nanoDNS v0.4 supports **at most 128 rules**, so adding a large hosts file directly will not work. This configuration **does not block all Internet**.
 
-The two upstream addresses are **Quad9's security-filtering service** (primary and backup at the same provider); they do not add provider diversity. They belong **inside nanoDNS only**. They resolve **unmatched** names; they must **not** be added as a public DNS bypass in the console's network settings.
+The four IPv4 upstream addresses use Control D (unfiltered) first, AdGuard DNS (non-filtering) as fallback. They are configured only inside nanoDNS and resolve unmatched names. They must never be entered in console DNS fields. Quad9 withdrew from France on 24 November 2026. The new providers do not add malware/ad filtering.
 
 **Checkpoint B:** path, format, bind, rule count, exceptions and backup checked; console WAN still denied.
 
@@ -75,9 +77,11 @@ The two upstream addresses are **Quad9's security-filtering service** (primary a
 NanoDNS v0.4
 [nanodns] bind IPv4: 127.0.0.1:53
 [nanodns] bind IPv6: [::1]:53
-[nanodns] config loaded: 2 upstream(s), 124 rule(s), 0 exception(s), timeout=1500ms
-[nanodns] upstream[0] = 9.9.9.9
-[nanodns] upstream[1] = 149.112.112.112
+[nanodns] config loaded: 4 upstream(s), 124 rule(s), 0 exception(s), timeout=1500ms
+[nanodns] upstream[0] = 76.76.2.0
+[nanodns] upstream[1] = 76.76.10.0
+[nanodns] upstream[2] = 94.140.14.140
+[nanodns] upstream[3] = 94.140.14.141
 [nanodns] listening on 127.0.0.1:53
 [nanodns] listening on [::1]:53
 ```
@@ -101,7 +105,7 @@ On console, go to **Settings → Network → Settings → Set Up Internet Connec
 | MTU | Automatic / existing setting |
 | Proxy | Do not use / existing setting |
 
-**Never enter `1.1.1.1`, `9.9.9.9`, `8.8.8.8` or a public/community DNS as the console's secondary resolver.** This may bypass your local rules. The console fields use an IPv4 loopback address; `bind6=::1` makes nanoDNS listen on IPv6 loopback but **does not establish that every possible IPv6 or alternative-resolver path is controlled**.
+**Never enter `1.1.1.1`, `76.76.2.0`, `8.8.8.8` or a public/community DNS as the console's secondary resolver.** This may bypass your local rules. The console fields use an IPv4 loopback address; `bind6=::1` makes nanoDNS listen on IPv6 loopback but **does not establish that every possible IPv6 or alternative-resolver path is controlled**.
 
 Save the settings. If the console reports a failed platform services Network / Internet connection test, **do not 'fix' it by switching to automatic or public DNS**. Tests that contact platform network can fail **precisely because the rules blocked platform network**.
 
@@ -143,7 +147,7 @@ Only if you **accept the limitations** in [THREAT_MODEL.md](THREAT_MODEL.md) and
 1. Keep nanoDNS **running**, verify console DNS remains `127.0.0.1` in **both fields**, and inspect the current session log once more.
 2. **Remove the temporary router/WAN restriction** only when you accept that **unlisted hosts, direct IP addresses, encrypted/alternate DNS and pre-existing connections can reach the Internet**. Retain the restriction if avoiding *any* possible publisher contact is mandatory.
 3. Launch a **known permitted** homebrew function that legitimately requests an unlisted name (for example, public project metadata on `github.com`). Confirm the function actually succeeds.
-4. Check the current nanoDNS log for a matching DNS query and an upstream response from **`9.9.9.9` or `149.112.112.112`**. Upstream log wording varies. **No upstream query observed means this test is inconclusive**, even if an application loaded cached content.
+4. Check the current nanoDNS log for a matching DNS query and an upstream response from one of `76.76.2.0`, `76.76.10.0`, `94.140.14.140`, `94.140.14.141`. Upstream log wording varies. **No upstream query observed means this test is inconclusive**, even if an application loaded cached content.
 5. Continue to observe the console log for blocked names and unexpected traffic; report missing endpoints with **redacted** evidence.
 
 If the access you need fails, **do not 'fix' it by setting automatic DNS or a public secondary server**. Restore WAN isolation before diagnosis.

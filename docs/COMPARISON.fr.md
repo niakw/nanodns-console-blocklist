@@ -8,9 +8,9 @@ Ce tableau compare les **réglages livrés par défaut**, pas les possibilités 
 | --- | --- | --- | --- |
 | Règles initiales de blocage | **8** | **124** | **124 règles obligatoires compilées** |
 | Exceptions initiales | **6** | **0** | Impossible d'exempter un domaine déjà protégé |
-| DNS amont | 3 fournisseurs distincts | **Quad9 sécurisé uniquement** | Quad9 sécurisé |
+| DNS amont | 3 fournisseurs distincts | **Control D + AdGuard sans filtrage** | Control D + AdGuard sans filtrage |
 | Familles de domaines | Couverture initiale | Plusieurs générations, éditeurs et alias connus | Idem, avec priorité obligatoire |
-| Résolution des noms autorisés | Oui | Via Quad9 | Via Quad9 |
+| Résolution des noms autorisés | Oui | Via les DNS amont | Via les DNS amont |
 | Modification par fichier INI | Oui | Oui | Oui, sauf règles obligatoires |
 | Vérification des réponses DNS | Minimale | Dépend du binaire installé | Vérification question/réponse et alias protégés |
 | Questions DNS multiples | Comportement original | Dépend du binaire | Rejet avant retransmission |
@@ -22,15 +22,15 @@ Ce tableau compare les **réglages livrés par défaut**, pas les possibilités 
 
 ## Quel nanoDNS choisir ?
 
-Tu peux conserver **[le nanoDNS original de Drakmor](https://github.com/drakmor/nanoDNS)** et simplement utiliser notre `nanodns.ini` de 124 règles. En alternative, notre **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-13.60)** fournit un véritable ELF indépendant, avec règles obligatoires intégrées au programme et protections supplémentaires du moteur DNS et du processus.
+Tu peux conserver **[le nanoDNS original de Drakmor](https://github.com/drakmor/nanoDNS)** et simplement utiliser notre `nanodns.ini` de 124 règles. En alternative, notre **[nanoDNS 13.60](https://github.com/niakw/nanoDNS-Encore)** fournit un véritable ELF indépendant, avec règles obligatoires intégrées au programme et protections supplémentaires du moteur DNS et du processus.
 
-**La Release 0.4-13.60.2 a été testée sur PS5 firmware 13.60 :** démarrage, blocage DNS A et extinction/rallumage réussis selon le testeur. **Les autres firmwares PS5 et la PS4 ne sont pas validés par des utilisateurs** ; la veille/reprise et l'endurance restent hors du périmètre de cette validation.
+**La Release 0.4-13.60.2 a été testée sur PS5 firmware 13.60 :** démarrage, blocage DNS A et extinction/rallumage réussis selon le testeur. **Les autres firmwares PS5 et la PS4 ne sont pas validés par des utilisateurs** ; la veille/reprise, l'endurance et le nouveau profil DNS restent hors du périmètre de cette validation.
 
-[Notre Release 13.60](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Télécharger le ZIP ELF + INI](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip). Ne pas lancer simultanément notre ELF et celui de Drakmor.
+[Notre Release 13.60](https://github.com/niakw/nanoDNS-Encore/releases/latest) · [Télécharger le ZIP ELF + INI](https://github.com/niakw/nanoDNS-Encore/releases/latest). Ne pas lancer simultanément notre ELF et celui de Drakmor.
 
 ## Pourquoi garder éventuellement le fork ?
 
-Notre **fichier INI** renforce les règles par défaut, mais une autre configuration pourrait toujours les contourner. Le [fork binaire](https://github.com/niakw/nanoDNS-13.60) place les motifs obligatoires **dans le programme**, avant les exceptions, et améliore certains chemins d'arrêt et de vérification réseau. En revenant à nanoDNS original, ces protections supplémentaires disparaissent.
+Notre **fichier INI** renforce les règles par défaut, mais une autre configuration pourrait toujours les contourner. Le [fork binaire](https://github.com/niakw/nanoDNS-Encore) place les motifs obligatoires **dans le programme**, avant les exceptions, et améliore certains chemins d'arrêt et de vérification réseau. En revenant à nanoDNS original, ces protections supplémentaires disparaissent.
 
 Le programme original sait charger des règles personnalisées. Les chiffres 8 et 6 désignent uniquement sa configuration officielle initiale.
 

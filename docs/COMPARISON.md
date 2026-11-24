@@ -8,9 +8,9 @@ This compares **default shipped configurations**, not the maximum capabilities o
 | --- | --- | --- | --- |
 | Default deny rules | **8** | **124** | **124 compiled mandatory masks** |
 | Default bypass exceptions | **6** | **0** | Protected names bypass all custom exceptions |
-| Default upstreams | 3 different providers | **Quad9 Secure pair only** | Quad9 Secure pair only |
+| Default upstreams | 3 different providers | **Control D + AdGuard (unfiltered)** | Control D + AdGuard (unfiltered) |
 | Hostname families | Core platform defaults | Multiple generations, publishers and historical aliases | Same list, enforced in code |
-| Allowed DNS | Forwarded | Forwarded through Quad9 | Forwarded through Quad9 |
+| Allowed DNS | Forwarded | Forwarded through the ordered upstreams | Forwarded through the ordered upstreams |
 | User-editable file | Yes | Yes | Yes, without weakening compiled protected rules |
 | DNS upstream reply validation | Basic transaction checking | Depends on installed payload | Question / answer / protected alias checks |
 | Unusual multiple-question DNS | Original runtime behavior | Depends on installed payload | Rejected before forwarding |
@@ -22,13 +22,13 @@ This compares **default shipped configurations**, not the maximum capabilities o
 
 ## Runtime alternatives
 
-Use the **[original nanoDNS by Drakmor](https://github.com/drakmor/nanoDNS)** with this project's `nanodns.ini` when you only want to customize its DNS configuration. Alternatively, our independent **[nanoDNS 13.60 runtime](https://github.com/niakw/nanoDNS-13.60)** provides a complete ELF with the same 124-rule default policy plus compiled mandatory masks and runtime hardening. **Its 0.4-13.60.2 release passed a user startup, blocked A-query and normal shutdown/power-on trial on PS5 firmware 13.60.** No hardware validation is claimed for other PS5 firmware or PS4.
+Use the **[original nanoDNS by Drakmor](https://github.com/drakmor/nanoDNS)** with this project's `nanodns.ini` when you only want to customize its DNS configuration. Alternatively, our independent **[nanoDNS 13.60 runtime](https://github.com/niakw/nanoDNS-Encore)** provides a complete ELF with the same 124-rule default policy plus compiled mandatory masks and runtime hardening. **Its 0.4-13.60.2 release passed a user startup, blocked A-query and normal shutdown/power-on trial on PS5 firmware 13.60.** No hardware validation is claimed for other PS5 firmware or PS4. The new resolver profile needs its own user test.
 
-[Download our 13.60 Release](https://github.com/niakw/nanoDNS-13.60/releases/tag/v0.4-13.60.2) · [Ready-to-copy ZIP](https://github.com/niakw/nanoDNS-13.60/releases/download/v0.4-13.60.2/nanodns-13.60-v0.4-13.60.2-install.zip). The ZIP installs an ELF as well as the INI; do not run it alongside the original payload.
+[Download our 13.60 Release](https://github.com/niakw/nanoDNS-Encore/releases/latest) · [Ready-to-copy ZIP](https://github.com/niakw/nanoDNS-Encore/releases/latest). The ZIP installs an ELF as well as the INI; do not run it alongside the original payload.
 
 ## Key distinction
 
-The **124 rules and zero exceptions** in the independent configuration strengthen default hostname coverage. They remain **editable** and can be bypassed by a different user configuration. The optional [hardened runtime](https://github.com/niakw/nanoDNS-13.60) also **compiles mandatory rules**, prioritizes them over exceptions, and adds packet validation and process-lifecycle changes. Reverting to stock nanoDNS loses those runtime protections, even with the same INI.
+The **124 rules and zero exceptions** in the independent configuration strengthen default hostname coverage. They remain **editable** and can be bypassed by a different user configuration. The optional [hardened runtime](https://github.com/niakw/nanoDNS-Encore) also **compiles mandatory rules**, prioritizes them over exceptions, and adds packet validation and process-lifecycle changes. Reverting to stock nanoDNS loses those runtime protections, even with the same INI.
 
 The original software can load custom blocklists; eight rules and six exceptions describe only its **unmodified defaults**.
 
